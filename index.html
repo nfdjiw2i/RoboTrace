@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="ru" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboTrace</title>
+<meta name="description" content="Монохромный терминал разведки Roblox: профили, друзья, игры, серверы, субплейсы, модерация и связи с Discord.">
+<meta name="google" content="notranslate">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RoboTrace">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Cpath d='M16 4v24M5.6 10l20.8 12M5.6 22l20.8-12' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0b;--pn:#111;--ln:#2b2b2b;--tx:#e8e8e8;--mu:#777;--ac:#fff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.5 'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+a{color:inherit}
+header{display:flex;align-items:center;gap:20px;padding:12px 24px;border-bottom:1px solid var(--ln);position:sticky;top:0;background:var(--bg);z-index:5;flex-wrap:wrap}
+.logo{font-weight:700;letter-spacing:.2em;text-decoration:none;display:flex;align-items:center;gap:8px}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:6px 12px;border:1px solid transparent;text-decoration:none;color:var(--mu);letter-spacing:.15em;font-size:11px}
+nav a.on,nav a:hover{color:var(--ac);border-color:var(--ln)}
+#cfg{margin-left:auto}
+main{max-width:1240px;margin:0 auto;padding:24px}
+.p{position:relative;border:1px solid var(--ln);background:var(--pn);margin-bottom:20px}
+.p:before,.p:after{content:"";position:absolute;width:9px;height:9px;border:1px solid var(--ac)}
+.p:before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.p:after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.p>h3{margin:0;padding:16px 20px 0;font-size:11px;letter-spacing:.3em;font-weight:500;color:var(--mu);text-transform:uppercase}
+.p>small{display:block;padding:2px 20px 12px;color:var(--mu);border-bottom:1px solid var(--ln)}
+.pb{padding:16px 20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.mod{display:grid;grid-template-columns:minmax(280px,380px) 1fr;gap:20px;align-items:start}
+@media(max-width:860px){.g2,.mod{grid-template-columns:1fr}}
+.bar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.bar label{display:flex;align-items:center;gap:6px;color:var(--mu);font-size:11px}
+input,select{flex:1;min-width:120px;background:#0a0a0a;border:1px solid var(--ln);color:var(--tx);padding:11px 13px;font:inherit;outline:0}
+input[type=number]{max-width:90px;min-width:70px;flex:none}
+input[type=checkbox]{flex:none;min-width:0}
+input:focus,select:focus{border-color:#666}
+button,.btn{background:none;border:1px solid var(--ln);color:var(--tx);padding:9px 14px;font:inherit;font-size:11px;letter-spacing:.15em;cursor:pointer;text-transform:uppercase;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{border-color:var(--ac)}
+button:disabled{opacity:.4}
+.sm{padding:4px 8px;font-size:10px;letter-spacing:.1em}
+.r{display:flex;justify-content:space-between;gap:16px;padding:6px 0;color:var(--mu)}
+.r b{color:var(--tx);font-weight:500;text-align:right;word-break:break-all}
+.msg{color:var(--mu);padding:8px 0}.err{color:#ff6b6b}.ok{color:#7dff9b}
+.lbl{font-size:11px;letter-spacing:.3em;color:var(--mu);margin:0 0 8px}
+.big{font-size:34px;font-weight:700}
+.rate{height:6px;background:#222;margin:14px 0 6px}.rate i{display:block;height:100%;background:#fff}
+.desc{white-space:pre-wrap;color:#cfcfcf;max-height:260px;overflow:auto}
+.av{display:flex;gap:20px;flex-wrap:wrap}.av img{width:200px;height:200px;background:#1a1a1a;object-fit:cover}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.card{border:1px solid var(--ln);padding:8px;text-align:center;overflow:hidden}
+.card:hover{border-color:var(--ac)}.card img{width:100%;aspect-ratio:1;background:#1a1a1a;cursor:pointer}
+.card span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.card button{margin-top:6px;width:100%}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;letter-spacing:.25em;color:var(--mu);text-align:left;font-weight:500;padding:10px 14px;border-bottom:1px solid var(--ln);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid #1a1a1a;vertical-align:middle}
+.tag{border:1px solid var(--ln);padding:2px 8px;font-size:11px;margin:2px;display:inline-block;cursor:pointer}
+canvas{width:100%;height:460px;background:#0a0a0a;display:block}
+.hit td{background:#222}
+.sp{background:#0a0a0a;border:1px solid var(--ln);height:150px;position:relative;margin:12px 0}.sp svg{width:100%;height:100%;display:block}
+.spl{position:absolute;right:6px;font-size:10px;color:var(--mu);font-style:normal}.spl.t{top:3px}.spl.b{bottom:3px}
+button.on{background:#fff;color:#000;border-color:#fff}
+.p>small:not(#scnt):not(.keep),.msg[style*="font-size:11px"]:not(.err):not(#sprog),#chg{display:none}
+.p>small.keep{color:var(--tx)}
+.cc{white-space:nowrap}.cc.na{color:var(--mu)}
+#scnt{color:var(--tx);font-size:12px}.p>h3{color:#fff;font-size:12px}.p>h3+.pb{padding-top:12px}
+.clk{cursor:pointer}.clk:hover td{background:#181818}
+.avs{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px;max-width:360px}
+.avs img,.avs i{width:30px;height:30px;background:#1a1a1a;display:block}
+.avs img.me{outline:2px solid #fff}
+.jid{font-size:11px;word-break:break-all;color:#cfcfcf}
+.ico{width:44px;height:44px;background:#1a1a1a;display:block}
+.verdict{font-size:20px;font-weight:700;letter-spacing:.1em;padding:14px;border:1px solid var(--ln);text-align:center;margin-bottom:14px}
+.verdict.bad{border-color:#ff6b6b;color:#ff6b6b}.verdict.good{border-color:#7dff9b;color:#7dff9b}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:8px 16px;display:none;z-index:9;font-size:12px}
+h2.t{letter-spacing:.1em;margin:0 0 14px;font-size:20px}
+.sk{background:linear-gradient(90deg,#161616,#262626,#161616);background-size:200% 100%;animation:skl 1.2s linear infinite;color:transparent!important;border-color:transparent!important}
+@keyframes skl{to{background-position:-200% 0}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-4px 0 14px}.chips:empty{display:none}
+.chips .tag{margin:0}
+body{background:var(--bg)}
+header{background:rgba(11,11,11,.82);backdrop-filter:blur(10px)}
+.logo{transition:.2s}.logo:hover{letter-spacing:.3em}
+nav a{transition:.15s}nav a.on{background:#fff;color:#000;border-color:#fff}nav a:hover:not(.on){background:#181818}
+.p{animation:fi .35s ease both;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:border-color .2s}.p:hover{border-color:#3d3d3d}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}}
+button,.btn,.tag{transition:background .15s,color .15s,border-color .15s}
+button:hover:not(:disabled):not(.on),.btn:hover,a.tag:hover{background:#fff;color:#000;border-color:#fff}
+button:disabled{cursor:default}
+input:focus,select:focus,textarea:focus{border-color:#888;box-shadow:0 0 0 3px rgba(255,255,255,.06)}
+.card{transition:transform .15s,border-color .15s}.card:hover{transform:translateY(-3px)}
+.card img{border-bottom:1px solid var(--ln)}
+tbody tr{transition:background .12s}tbody tr:hover td{background:#171717}
+.av img,#pimg{border:1px solid var(--ln)}
+.r{border-bottom:1px dashed #1d1d1d}.r:last-child{border-bottom:0}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-track{background:#0b0b0b}::-webkit-scrollbar-thumb{background:#2c2c2c}::-webkit-scrollbar-thumb:hover{background:#444}
+#toast{box-shadow:0 6px 24px rgba(0,0,0,.5);letter-spacing:.05em}
+textarea{outline:0}
+::selection{background:#fff;color:#000}
+
+html{background:#070707}
+body{background:transparent!important}
+#bgfx{position:fixed;inset:0;width:100%;height:100%!important;z-index:-2;background:none;pointer-events:none}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000,transparent 78%);mask-image:radial-gradient(ellipse at 50% 30%,#000,transparent 78%);animation:gd 40s linear infinite}
+body:after{content:"";position:fixed;left:50%;top:-260px;width:1100px;height:620px;max-width:140vw;transform:translateX(-50%);z-index:-1;pointer-events:none;background:radial-gradient(closest-side,rgba(255,255,255,.13),rgba(255,255,255,.05) 55%,transparent);filter:blur(30px);animation:glow 9s ease-in-out infinite alternate}
+@keyframes gd{to{background-position:56px 56px,56px 56px}}@keyframes glow{from{opacity:.75}to{opacity:1}}
+.p{background:rgba(16,16,16,.78);backdrop-filter:blur(6px)}
+header{background:rgba(8,8,8,.8)}
+.logo{background:linear-gradient(90deg,#fff,#888 60%,#fff);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 6s linear infinite}
+.logo svg{-webkit-text-fill-color:initial}@keyframes sh{to{background-position:-200%}}
+.pc{cursor:pointer;text-align:left;padding:10px;display:flex;flex-direction:column;gap:4px}.pc img,.pc .sk{width:100%;aspect-ratio:1}
+.pc b{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc .ps{font-size:11px;color:var(--mu);line-height:1.6}.pc .ps i{font-style:normal;color:var(--tx)}
+.grid.pin{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.rx{font-size:40px;font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#/profile"><svg width="20" height="20" viewBox="0 0 32 32"><path d="M16 4v24M5.6 10l20.8 12M5.6 22l20.8-12" stroke="#fff" stroke-width="3"/></svg>RoboTrace</a>
+  <nav id="nav"></nav><button id="cfg" class="sm" onclick="openCfg()">WORKER</button>
+</header>
+<canvas id="bgfx"></canvas><main id="app"></main>
+<div id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls = {
+  g:(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch{return d}},
+  s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+};
+const fmt = n => n==null ? '—' : Number(n).toLocaleString('ru-RU');
+const dt = s => s ? new Date(s).toLocaleDateString('ru-RU') : '—';
+const KEEP = /^(найдено|всего|.*\d+ друзей)/;
+const panel = (t,sub,body) => `<section class="p"><h3>${t}</h3>${sub&&KEEP.test(sub)?`<small class="keep">${sub}</small>`:''}<div class="pb">${body}</div></section>`;
+const row = (k,v) => `<div class="r"><span>${k}</span><b>${v}</b></div>`;
+const val = (r,f,d='—') => r.status==='fulfilled' ? f(r.value) : d;
+const post = body => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+
+const DB = 'https://robotrace-d4230-default-rtdb.firebaseio.com';
+async function dbReq(path, method, body, q=''){
+  const ac = new AbortController(), tm = setTimeout(()=>ac.abort(), 6000);
+  try{
+    const r = await fetch(`${DB}/${path}.json${q}`, {method, signal:ac.signal, body: body===undefined ? undefined : JSON.stringify(body)});
+    if (!r.ok) throw new Error('DB HTTP '+r.status);
+    return await r.json();
+  } finally { clearTimeout(tm); }
+}
+const dbGet = (p,q) => dbReq(p,'GET',undefined,q);
+const dbPush = (p,v) => dbReq(p,'POST',v).catch(()=>null);
+const errBox = (el,m) => { el.innerHTML = `<div class="msg err">Ошибка: ${esc(m)}</div><button onclick="route()">Повторить</button>`; };
+async function retry(fn, n){ for (let i=0;;i++){ try{ return await fn(); }catch(e){ if (i>=n-1) throw e; await sleep(1200*(i+1)); } } }
+const joinUrl = (place, job) => `roblox://experiences/start?placeId=${place}${job?'&gameInstanceId='+job:''}`;
+function toast(t){ const e=$('#toast'); e.textContent=t; e.style.display='block'; clearTimeout(toast.t); toast.t=setTimeout(()=>e.style.display='none',1500); }
+function cp(t){
+  const done=()=>toast('Скопировано');
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(done,()=>fb()); else fb();
+  function fb(){ const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand('copy')}catch{} a.remove(); done(); }
+}
+
+
+const CAND = [
+  (s,p) => `https://${s}.roproxy.com${p}`,
+  (s,p) => `https://${s}.rotunnel.com${p}`,
+  (s,p) => `https://corsproxy.io/?url=${encodeURIComponent(`https://${s}.roblox.com${p}`)}`,
+  (s,p) => `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://${s}.roblox.com${p}`)}`
+];
+let okIdx = 0;
+const QMAX = 4; let qRun = 0; const qWait = [];
+const qAcq = () => new Promise(res => { const go = () => { if (qRun < QMAX){ qRun++; res(); } else qWait.push(go); }; go(); });
+const qRel = () => { qRun--; const n = qWait.shift(); if (n) n(); };
+const GCACHE = new Map();
+async function api(sub, path, o){
+  const isGet = !(o && o.method && o.method!=='GET'), key = sub+path;
+  if (isGet){ const c = GCACHE.get(key); if (c && Date.now()-c.t < 60000) return c.v; }
+  await qAcq();
+  try{
+    let v;
+    try{ v = await api1(sub, path, o); }catch(e){ await sleep(1500); v = await api1(sub, path, o); }
+    if (isGet) GCACHE.set(key, {t:Date.now(), v});
+    return v;
+  } finally { qRel(); }
+}
+async function api1(sub, path, o){
+  const full = `https://${sub}.roblox.com${path}`, c = [];
+  if (workerOn()) c.push(() => workerUrl(full));
+  CAND.forEach((f,ix) => { if (!(o && o.method==='POST' && ix===3)) c.push(() => f(sub,path)); });
+  let err;
+  for (let k=0;k<c.length;k++){
+    const i = (okIdx+k)%c.length;
+    try{
+      const r = await fetch(c[i](), {...o, headers:{'Accept-Language':'en-US,en;q=0.9', ...(o&&o.headers)}});
+      if (r.ok){ okIdx = i; return await r.json(); }
+      if (r.status===429) await sleep(1500);
+      err = new Error('HTTP '+r.status);
+    }catch(e){ err = e; }
+  }
+  throw new Error('Roblox сейчас не отвечает. Попробуйте ещё раз чуть позже.');
+}
+const WORKER = 'https://curly-heart-cb26.lvlyvcbcla.workers.dev/';
+function workerOn(){ return true; }
+function workerUrl(full){
+  const base = ls.g('custom', WORKER) || WORKER;
+  if (base.includes('{url}')) return base.replace('{url}', encodeURIComponent(full));
+  try{ const u = new URL(base); u.searchParams.set('url', full); const key = ls.g('workerKey',''); if (key) u.searchParams.set('key', key); return u.toString(); }catch{ return full; }
+}
+function closeCfg(){ const m=$('#mdl'); if (m) m.remove(); }
+function openCfg(){
+  closeCfg();
+  const d = document.createElement('div'); d.id = 'mdl';
+  d.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:20;display:flex;align-items:center;justify-content:center;padding:20px';
+  d.innerHTML = `<div class="p" style="max-width:560px;width:100%;margin:0"><h3>ВОРКЕР (CORS-ПРОКСИ)</h3><small>Настройки подключения Cloudflare Worker</small>
+    <div class="pb"><input id="wk" placeholder="https://имя.аккаунт.workers.dev" style="width:100%;margin-bottom:10px" value="${esc(ls.g('custom',''))}"><input id="wkey" type="password" placeholder="KEY — если задан в Worker" style="width:100%;margin-bottom:12px" value="${esc(ls.g('workerKey',''))}">
+    <div class="bar"><button onclick="saveCfg()">Сохранить</button><button onclick="testCfg()">Проверить</button><button onclick="closeCfg()">Закрыть</button></div><div id="wkr" class="msg"></div></div></div>`;
+  document.body.appendChild(d);
+}
+function saveCfg(){ ls.s('custom', $('#wk').value.trim()); ls.s('workerKey', $('#wkey').value.trim()); closeCfg(); toast('Сохранено'); route(); }
+async function testCfg(){
+  const o = $('#wkr'); ls.s('custom', $('#wk').value.trim()); ls.s('workerKey', $('#wkey').value.trim()); o.textContent = 'проверяю…';
+  try{
+    const r = await fetch(workerUrl('https://users.roblox.com/v1/users/1'));
+    const j = await r.json();
+    o.innerHTML = j.name ? `<span class="ok">Работает: получен игрок ${esc(j.name)}</span>` : `<span class="err">Ответ без данных: ${esc(JSON.stringify(j).slice(0,120))}</span>`;
+  }catch(e){ o.innerHTML = `<span class="err">Не работает: ${esc(e.message)}</span>`; }
+}
+
+async function resolveUser(q){
+  q = String(q||'').trim();
+  if (!q) throw new Error('Введите ник или ID');
+  if (/^\d+$/.test(q)) return api('users','/v1/users/'+q);
+  const r = await api('users','/v1/usernames/users', post({usernames:[q],excludeBannedUsers:false}));
+  if (!r.data[0]) throw new Error('Игрок не найден');
+  return api('users','/v1/users/'+r.data[0].id);
+}
+async function heads(ids){
+  const m = {};
+  for (let i=0;i<ids.length;i+=100){
+    try{
+      const r = await api('thumbnails',`/v1/users/avatar-headshot?userIds=${ids.slice(i,i+100).join()}&size=150x150&format=Png`);
+      (r.data||[]).forEach(d => m[d.targetId] = d.imageUrl);
+    }catch{}
+  }
+  return m;
+}
+async function headOf(id){
+  for (let i=0;i<5;i++){
+    const d = (await api('thumbnails',`/v1/users/avatar-headshot?userIds=${id}&size=150x150&format=Png&isCircular=false`)).data[0];
+    if (d && d.imageUrl) return d.imageUrl;
+    if (d && d.state==='Blocked') break;
+    await sleep(800);
+  }
+  throw new Error('Roblox не отдал аватарку игрока (Pending/Blocked)');
+}
+const placeToUniverse = async id => (await api('apis',`/universes/v1/places/${id}/universe`)).universeId;
+
+
+const imgKey = u => { try{ const x = new URL(u); if (x.hostname.toLowerCase().endsWith('rbxcdn.com')) return x.pathname.split('/').filter(Boolean)[0]?.toLowerCase() || ''; }catch{} return String(u||'').split('?')[0].toLowerCase(); };
+window.AVSTAT = {ok:0, empty:0, fail:0, last:'', state:''};
+let TOKTYPE = 'AvatarHeadShot';
+const tokReq = t => ({requestId:`0:${t}:AvatarHeadshot:150x150:png:regular`,type:TOKTYPE,targetId:0,token:t,format:'png',size:'150x150',isCircular:false});
+const tokOf = (d, c, i) => { const p = String(d.requestId||'').split(':')[1]; return c.includes(p) ? p : c[i]; };
+async function tokBatch(c, cache, pend, flipped){
+  const r = await api('thumbnails','/v1/batch', post(c.map(tokReq)));
+  const data = r.data||[];
+  if (data[0]) AVSTAT.raw = JSON.stringify(data[0]).slice(0,220);
+  if (!flipped && data.length && data.every(d => !d.imageUrl && d.state==='Error')){
+    TOKTYPE = TOKTYPE==='AvatarHeadShot' ? 'AvatarHeadshot' : 'AvatarHeadShot';
+    return tokBatch(c, cache, pend, true);
+  }
+  const returned = new Set();
+  data.forEach((d,i) => {
+    const t = tokOf(d, c, i);
+    if (!t) return;
+    returned.add(t);
+    if (d.imageUrl){ cache[t] = d.imageUrl; AVSTAT.ok++; }
+    else { pend.push(t); AVSTAT.empty++; AVSTAT.state = d.state||''; }
+  });
+  c.forEach(t => { if (!returned.has(t) && !cache[t]) pend.push(t); });
+}
+async function tokAv(tokens, cache){
+  const need = [...new Set(tokens)].filter(t => !cache[t]), ch = [], pend = [];
+  for (let i=0;i<need.length;i+=100) ch.push(need.slice(i,i+100));
+  for (let i=0;i<ch.length;i+=2){
+    await Promise.all(ch.slice(i,i+2).map(c => tokBatch(c, cache, pend).catch(e => { AVSTAT.fail++; AVSTAT.last = e.message; })));
+  }
+  for (let r=0; r<3 && pend.length; r++){
+    await sleep(1200*(r+1)); const cur = pend.splice(0);
+    for (let i=0;i<cur.length;i+=100) await tokBatch(cur.slice(i,i+100), cache, pend).catch(()=>{});
+  }
+}
+
+
+const sess = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random());
+async function exploreSort(sortId, pages){
+  const sid = sess(), out = []; let tok = '';
+  for (let i=0;i<pages;i++){
+    const r = await api('apis',`/explore-api/v1/get-sort-content?sessionId=${sid}&sortId=${encodeURIComponent(sortId)}&device=computer&country=all&cpuCores=8&maxResolution=1920x1080&maxMemory=8192&networkType=4g${tok?'&pageToken='+encodeURIComponent(tok):''}`);
+    (r.games||[]).forEach(g => out.push(normGame(g)));
+    tok = r.nextPageToken; if (!tok) break;
+  }
+  return out;
+}
+async function omniSearch(q, pages){
+  const sid = sess(), out = []; let tok = '';
+  for (let i=0;i<pages;i++){
+    const r = await api('apis',`/search-api/omni-search?searchQuery=${encodeURIComponent(q)}&pageToken=${encodeURIComponent(tok)}&sessionId=${sid}&pageType=all`);
+    (r.searchResults||[]).forEach(sr => (sr.contents||[]).forEach(c => { if (c.universeId) out.push(normGame(c)); }));
+    tok = r.nextPageToken; if (!tok) break;
+  }
+  return out;
+}
+const normGame = c => ({u:c.universeId, n:c.name, on:c.playerCount ?? c.playing ?? 0, up:c.totalUpVotes ?? 0, dn:c.totalDownVotes ?? 0, pl:c.rootPlaceId, d:''});
+async function topGames(n){
+  const per = Math.ceil(n/20)+1;
+  return (await exploreSort('top-playing-now', Math.min(per,10))).slice(0,n);
+}
+
+
+const TABS = [['profile','ПРОФИЛИ'],['friends','ДРУЗЬЯ'],['mod','МОДЕРАЦИЯ'],['charts','CHARTS'],['game','ИГРА'],['blox','BLOXLINK'],['links','ССЫЛКИ'],['ids','ID'],['join','ВХОД'],['robux','КУРС ROBUX'],['market','МАРКЕТПЛЕЙС'],['compare','СРАВНЕНИЕ'],['fav','ЗАКРЕПЛЁННЫЕ']];
+window.CUR = null; window.AUTO = false;
+function rsPush(u){ let l = ls.g('rsearch',[]).filter(x=>x.id!=u.id); l.unshift({id:u.id,n:u.name,t:Date.now()}); ls.s('rsearch', l.slice(0,30)); }
+function rsRender(){
+  const b = $('#rs'); if (!b) return;
+  const l = ls.g('rsearch',[]);
+  b.innerHTML = l.length ? '<span class="msg">Ваши поиски:</span>' + l.slice(0,14).map(x=>`<a class="tag" onclick="act(window.TABCUR||'profile','${x.id}')">${esc(x.n)}</a>`).join('') + '<button class="sm" onclick="ls.s(\'rsearch\',[]);rsRender()">очистить</button>' : '';
+}
+function goto(tab, arg){
+  const h = `#/${tab}/${encodeURIComponent(arg||'')}`;
+  if (location.hash === h) route(); else location.hash = h;
+}
+function route(){
+  closeModal(); clearInterval(window.GT); clearInterval(window.SA); clearInterval(window.PA); if (window.SCAN) window.SCAN.abort();
+  const h = location.hash.replace(/^#\//,''), i = h.indexOf('/');
+  const tab = (i<0?h:h.slice(0,i)) || 'profile', arg = decodeURIComponent(i<0?'':h.slice(i+1));
+  window.TABCUR = tab; $('#nav').innerHTML = TABS.map(([k,n]) => `<a href="#/${k}" class="${k===tab?'on':''}">${n}</a>`).join('');
+  ({profile:pgProfile,friends:pgFriends,mod:pgMod,charts:pgCharts,game:pgGame,blox:pgBlox,links:pgLinks,ids:pgIds,join:pgJoin,robux:pgRobux,fav:pgFav,market:pgMarket,compare:pgCompare}[tab] || pgProfile)(arg);
+  window.scrollTo(0,0);
+}
+addEventListener('hashchange', route);
+
+async function userTab(tab, arg, render, root){
+  const q = arg || (CUR ? String(CUR.id) : '');
+  const R = root || $('#app');
+  R.innerHTML = (root ? '' : `<form class="bar" onsubmit="event.preventDefault();goto('${tab}',$('#q').value.trim())"><input id="q" placeholder="Ник или Roblox ID" autocomplete="off" value="${esc(arg || CUR?.name || '')}"><button>Найти</button></form><div id="rs" class="chips"></div>`) + '<div id="out"></div>';
+  const out = R.querySelector('#out'); rsRender();
+  if (!q){
+    out.innerHTML = panel('ИГРОК','','<div class="msg"><a class="tag" onclick="goto(\''+tab+'\',\'Roblox\')">Roblox</a><a class="tag" onclick="goto(\''+tab+'\',\'Builderman\')">Builderman</a></div>');
+    return;
+  }
+  out.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const same = CUR && (String(CUR.id)===q || CUR.name.toLowerCase()===q.toLowerCase());
+    const u = same ? CUR : await resolveUser(q);
+    rsPush(u); rsRender();
+    CUR = u; out.innerHTML = '';
+    await render(u, out);
+  }catch(e){ errBox(out, e.message); }
+}
+
+
+
+const SLOT = 1800000, WEEK = 336;
+const slotOf = t => String(Math.floor(t/SLOT));
+async function activityTrack(id){
+  clearInterval(window.PA);
+  const tick = async () => {
+    try{
+      const r = await api('presence','/v1/presence/users', post({userIds:[+id]}));
+      const p = (r.userPresences||[])[0]; if (!p) return;
+      const now = Date.now(), w = {};
+      if (p.userPresenceType > 0) w[slotOf(now)] = 1;
+      else if (p.lastOnline){ const t = Date.parse(p.lastOnline); if (t && now - t < 7*864e5) w[slotOf(t)] = 1; }
+      dbReq('tracked/'+id, 'PUT', {t:now}).catch(()=>null);
+      if (Object.keys(w).length) dbReq('activity/'+id, 'PATCH', w).catch(()=>null);
+    }catch{}
+  };
+  tick(); window.PA = setInterval(tick, 300000);
+}
+const TZNAMES = {'-8':'США, Канада (Тихоокеанское)','-7':'США, Канада (Горное)','-6':'США, Мексика, Центральная Америка','-5':'США, Канада (Восток), Колумбия, Перу','-4':'Венесуэла, Чили, Боливия','-3':'Бразилия, Аргентина, Уругвай','-2':'Атлантика','-1':'Азорские о-ва, Кабо-Верде','0':'Великобритания, Португалия, Ирландия','1':'Германия, Франция, Польша, Испания, Италия','2':'Украина, Финляндия, Румыния, Израиль, Египет, ЮАР','3':'Россия (Москва), Беларусь, Турция, Саудовская Аравия','4':'ОАЭ, Азербайджан, Армения, Грузия','5':'Узбекистан, Пакистан, Казахстан (запад)','6':'Казахстан, Киргизия, Бангладеш','7':'Таиланд, Вьетнам, Индонезия','8':'Китай, Филиппины, Малайзия, Сингапур','9':'Япония, Южная Корея','10':'Австралия (восток)','11':'Соломоновы о-ва','12':'Новая Зеландия'};
+async function countryFromActivity(id){
+  const cur = Math.floor(Date.now()/SLOT);
+  const r = await dbGet('activity/'+id, `?orderBy="$key"&startAt="${cur-WEEK}"`);
+  const keys = Object.keys(r||{}).map(Number).filter(k => k>cur-WEEK && k<=cur);
+  const days = new Set(keys.map(k => Math.floor(k*SLOT/864e5)));
+  if (keys.length < 20 || days.size < 3) return 'Информация не обновлена';
+  const H = new Array(48).fill(0);
+  keys.forEach(k => { H[k % 48]++; });
+  const n = 16; let best = 0, bi = 0;
+  for (let i=0;i<48;i++){ let t = 0; for (let j=0;j<n;j++) t += H[(i+j)%48]; if (i===0 || t < best){ best = t; bi = i; } }
+  const avg = H.reduce((a,b)=>a+b,0) * n / 48;
+  if (best > avg*0.45) return 'Информация не обновлена';
+  const centerUtc = ((bi + n/2) % 48) / 2;
+  let off = Math.round(4.5 - centerUtc); while (off > 12) off -= 24; while (off < -11) off += 24;
+  const nm = TZNAMES[String(off)];
+  if (!nm) return 'Информация не обновлена';
+  return `≈ UTC${off>=0?'+':''}${off} · ${esc(nm)} <span class="msg">по времени онлайна за неделю</span>`;
+}
+
+
+const skCards = n => Array.from({length:n},()=>'<div class="card"><div class="sk" style="aspect-ratio:1"></div><span class="sk">........</span><span class="sk">....</span></div>').join('');
+const cidGet = () => { let c = ls.g('cid',null); if (!c){ c = sess(); ls.s('cid', c); } return String(c).replace(/[^\\w-]/g,''); };
+async function avatarBig(id){
+  for (let i=0;i<6;i++){
+    const d = (await api('thumbnails',`/v1/users/avatar?userIds=${id}&size=420x420&format=Png`)).data[0];
+    if (d && d.imageUrl) return d.imageUrl;
+    if (d && d.state==='Blocked') break;
+    await sleep(900);
+  }
+  throw new Error('no avatar');
+}
+async function pgProfile(arg, root){ userTab('profile', arg, async (u, out) => {
+  const id = u.id, cid = cidGet();
+  out.innerHTML = panel('ПРОФИЛЬ',esc(u.name),
+    `<div class="av"><div id="pimg" class="sk" style="width:200px;height:200px"></div><div style="flex:1;min-width:240px">
+    ${row('ник',esc(u.name))}${row('отображаемое имя',esc(u.displayName))}${row('id',u.id)}
+    ${row('создан',dt(u.created))}${row('возраст аккаунта',fmt(Math.floor((Date.now()-new Date(u.created))/864e5))+' дн.')}${row('заблокирован Roblox',u.isBanned?'<span class="err">да</span>':'нет')}
+    ${row('страна','<span id="pctry" class="sk">загрузка…</span>')}
+    ${row('искали в RoboTrace','<span id="psc" class="sk">00 чел.</span>')}
+    ${row('друзья','<span id="pfc" class="sk">000</span>')}${row('подписчики','<span id="pfo" class="sk">000</span>')}${row('подписки','<span id="pfi" class="sk">000</span>')}
+    <div style="margin-top:14px" class="bar"><button onclick="act('friends','${id}')">Друзья</button><button onclick="act('mod','${id}')">Модерация</button><button onclick="act('blox','${id}')">Bloxlink</button>
+    <button data-n="${esc(u.name)}" onclick="fav('p','${id}',this.dataset.n)">Закрепить</button><a class="btn" target="_blank" rel="noopener" href="https://www.roblox.com/users/${id}/profile">Roblox</a><button onclick="cp(location.href.split('#')[0]+'#/profile/${id}')">Ссылка</button><button onclick="cp('${id}')">Копировать ID</button></div></div></div>`)+
+  panel('ОПИСАНИЕ','',`<div class="desc">${esc(u.description)||'—'}</div>`)+
+  panel('ДРУЗЬЯ','','<div id="pfr"></div>')+
+  panel('ЗАМЕТКА','',`<textarea id="pnote" rows="3" placeholder="Личная заметка об игроке (хранится только в этом браузере)" style="width:100%;background:#0a0a0a;border:1px solid var(--ln);color:var(--tx);padding:11px 13px;font:inherit">${esc(ls.g('note'+id,''))}</textarea>`)+
+  `<div class="g2">`+
+  panel('ИСТОРИЯ НИКОВ','','<div id="phi" class="msg">загрузка…</div>')+
+  panel('ГРУППЫ','','<div id="pgr" class="msg">загрузка…</div>')+
+  `</div>`+
+  panel('ИГРЫ ИГРОКА','','<div id="pgm" class="msg">загрузка…</div>');
+  const S = s => out.querySelector(s);
+  const put = (s, h) => { const e = S(s); if (e){ e.classList.remove('sk'); e.innerHTML = h; } };
+  const cnt = (path, sel) => api('friends', path).then(r => put(sel, fmt(r.count))).catch(() => put(sel, '—'));
+  { const nt = S('#pnote'); if (nt) nt.oninput = () => ls.s('note'+id, nt.value); }
+  loadFriendsBox(id, out);
+  cnt(`/v1/users/${id}/friends/count`,'#pfc'); cnt(`/v1/users/${id}/followers/count`,'#pfo'); cnt(`/v1/users/${id}/followings/count`,'#pfi');
+  avatarBig(id).then(src => { const e = S('#pimg'); if (e) e.outerHTML = `<img src="${esc(src)}" alt="">`; })
+    .catch(() => { const e = S('#pimg'); if (e){ e.classList.remove('sk'); e.style.background = '#1a1a1a'; } });
+  api('users',`/v1/users/${id}/username-history?limit=10`).then(r => put('#phi', r.data.map(x=>`<span class="tag">${esc(x.name)}</span>`).join('')||'—')).catch(() => put('#phi','—'));
+  api('groups',`/v2/users/${id}/groups/roles`).then(r => put('#pgr', r.data.map(x=>`<span class="tag">${esc(x.group.name)} · ${esc(x.role.name)}</span>`).join('')||'—')).catch(() => put('#pgr','—'));
+  api('games',`/v2/users/${id}/games?limit=10`).then(r => put('#pgm', r.data.map(x=>`<a class="tag" onclick="act('game','${x.rootPlace?.id}')">${esc(x.name)}</a>`).join('')||'—')).catch(() => put('#pgm','—'));
+  
+  dbReq('searchers/'+id+'/'+cid, 'PUT', {t:Date.now()}).catch(() => null)
+    .then(() => dbGet('searchers/'+id, '?shallow=true'))
+    .then(r => { const n = Object.keys(r||{}).filter(k => k!==cid).length; put('#psc', fmt(n)+' чел.'+(n?'':' (кроме вас)')); })
+    .catch(() => put('#psc','недоступно'));
+  activityTrack(id);
+  countryFromActivity(id).then(c => put('#pctry', c)).catch(() => put('#pctry','Информация не обновлена'));
+  loadExtra(id, out);
+}, root);}
+
+async function scanGame(place, target, pages, sg){
+  let cursor = '';
+  for (let p=0;p<pages;p++){
+    if (sg.aborted) return null;
+    const r = await api('games',`/v1/games/${place}/servers/Public?limit=100${cursor?'&cursor='+encodeURIComponent(cursor):''}`);
+    const byTok = {}; r.data.forEach(s => (s.playerTokens||[]).forEach(t => byTok[t] = s));
+    const toks = Object.keys(byTok);
+    for (let i=0;i<toks.length;i+=100){
+      if (sg.aborted) return null;
+      const c = toks.slice(i,i+100);
+      const rr = await api('thumbnails','/v1/batch', post(c.map(tokReq))).catch(()=>({data:[]}));
+      const h = (rr.data||[]).find(d => d.imageUrl && imgKey(d.imageUrl) === imgKey(target));
+      if (h) return byTok[tokOf(h, c, rr.data.indexOf(h))];
+    }
+    cursor = r.nextPageCursor; if (!cursor) break;
+  }
+  return null;
+}
+async function startScan(uid){
+  if (window.SCAN) window.SCAN.abort();
+  const ac = window.SCAN = new AbortController(), sg = ac.signal, prog = $('#sprog'), res = $('#sres');
+  const n = +$('#scn').value || 0, pages = +$('#scp').value || 1;
+  res.innerHTML = ''; prog.textContent = 'собираю список игр…';
+  try{
+    const target = await headOf(uid);
+    const cand = new Map(), add = (p,nm) => { if (p && !cand.has(String(p))) cand.set(String(p), nm || p); };
+    const [mine,fav,top] = await Promise.allSettled([
+      api('games',`/v2/users/${uid}/games?limit=50`),
+      api('games',`/v2/users/${uid}/favorite/games?limit=50`),
+      n ? topGames(n) : Promise.resolve([])
+    ]);
+    if (mine.status==='fulfilled') mine.value.data.forEach(g => add(g.rootPlace?.id, g.name));
+    if (fav.status==='fulfilled') fav.value.data.forEach(g => add(g.rootPlace?.id, g.name));
+    if (top.status==='fulfilled') top.value.forEach(g => add(g.pl, g.n));
+    const list = [...cand], total = list.length; let done = 0, found = null;
+    await Promise.all([0,1,2].map(async () => {
+      while (!found && !sg.aborted && list.length){
+        const [pl,nm] = list.shift();
+        prog.textContent = `сканирую: ${nm} (${done}/${total})`;
+        const s = await scanGame(pl, target, pages, sg).catch(()=>null);
+        done++;
+        if (s && !found){ found = {pl,nm,s}; ac.abort(); }
+      }
+    }));
+    if (found){
+      prog.textContent = '';
+      dbPush('sightings/'+uid,{t:Date.now(),place:found.pl,job:found.s.id,name:found.nm}).then(()=>loadSightings(uid));
+      res.innerHTML = row('игра',esc(found.nm))+row('place id',found.pl)+row('job id',`<span class="jid">${esc(found.s.id)}</span>`)+row('игроков на сервере',`${found.s.playing}/${found.s.maxPlayers}`)+
+        `<div class="bar"><a class="btn" href="${joinUrl(found.pl,found.s.id)}">Зайти на этот сервер</a><button onclick="cp('${found.s.id}')">Копировать Job ID</button><button onclick="act('game','${found.pl}')">Открыть игру</button></div>`;
+    } else {
+      prog.textContent = sg.aborted ? 'остановлено' : `не найден среди ${total} игр (проверено страниц серверов на игру: до ${pages}). Игрок не в игре, на приватном сервере или в другой игре.`;
+    }
+  }catch(e){ prog.innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+}
+
+
+async function friendsOf(id){
+  let list = [], err = '', ok = false;
+  for (let i=0;i<4 && !ok;i++){
+    try{ const r = await api('friends',`/v1/users/${id}/friends`); if (r && Array.isArray(r.data)){ list = r.data; ok = true; } }catch(e){ err = e.message; }
+    if (!ok) await sleep(1200*(i+1));
+  }
+  if (!list.length){
+    try{
+      let cur = '';
+      for (let i=0;i<10;i++){
+        const r = await api('friends',`/v1/users/${id}/friends/find?limit=50${cur?'&cursor='+encodeURIComponent(cur):''}`);
+        ok = true; list.push(...(r.PageItems||r.data||[])); cur = r.NextCursor||r.nextPageCursor; if (!cur) break;
+      }
+    }catch(e){ err = e.message; }
+  }
+  if (!list.length){
+    try{
+      const r = await api('friends',`/v1/users/${id}/friends?userSort=StatusFrequents`);
+      if (r && Array.isArray(r.data) && r.data.length){ list = r.data; ok = true; }
+    }catch(e){ err = e.message; }
+  }
+  if (!list.length){
+    if (!ok) throw new Error('Не удалось загрузить список друзей. Попробуйте ещё раз.');
+    let c = 0; try{ c = (await api('friends',`/v1/users/${id}/friends/count`)).count; }catch{}
+    if (c > 0) throw new Error(`У игрока ${c} друзей, но Roblox сейчас не отдаёт список. Попробуйте ещё раз.`);
+  }
+  const seen = new Set(); list = list.filter(f => f && f.id && !seen.has(f.id) && seen.add(f.id));
+  const need = list.filter(f => !f.name).map(f => f.id);
+  for (let i=0;i<need.length;i+=100){
+    try{ const r = await api('users','/v1/users', post({userIds:need.slice(i,i+100),excludeBannedUsers:false})); const m = {}; (r.data||[]).forEach(x => m[x.id] = x); list = list.map(f => f.name ? f : (m[f.id]||f)); }catch{}
+  }
+  return list.map(f => ({id:f.id, name:f.name||String(f.id), displayName:f.displayName||f.name||String(f.id)}));
+}
+async function loadFriendsBox(id, root){
+  const box = root.querySelector('#pfr'); if (!box) return;
+  box.innerHTML = `<div class="grid">${skCards(8)}</div>`;
+  try{
+    const fr = await friendsOf(id), th = {};
+    const draw = all => {
+      const b = root.querySelector('#pfr'); if (!b) return;
+      const l = all ? fr : fr.slice(0,24);
+      b.innerHTML = `<div class="msg">друзей: ${fr.length}</div>` + (fr.length ? `<div class="grid">${l.map(f => `<div class="card">${th[f.id] ? `<img loading="lazy" src="${esc(th[f.id])}" alt="" onclick="act('profile','${f.id}')">` : `<div class="sk" style="aspect-ratio:1;cursor:pointer" onclick="act('profile','${f.id}')"></div>`}<span>${esc(f.displayName)}</span><span style="color:var(--mu)">@${esc(f.name)}</span></div>`).join('')}</div>` : '<div class="msg">список пуст или скрыт</div>') +
+        (!all && fr.length>24 ? `<button class="sm" id="pfall" style="margin-top:12px">Показать всех (${fr.length})</button>` : '');
+      const bt = b.querySelector('#pfall'); if (bt) bt.onclick = () => draw(true);
+    };
+    draw(false);
+    const ids = fr.map(f => f.id);
+    heads(ids).then(async m => { Object.assign(th, m); draw(false); const miss = ids.filter(i => !th[i]); if (miss.length){ await sleep(1500); Object.assign(th, await heads(miss)); } draw(!root.querySelector('#pfall')); });
+  }catch(e){ box.innerHTML = `<div class="msg err">${esc(e.message)}</div><button class="sm" onclick="loadFriendsBox('${id}', document)">Повторить</button>`; }
+}
+async function pgFriends(arg, root){ userTab('friends', arg, async (u, out) => {
+  out.innerHTML = panel('ПРОВОДНИК ДРУЗЕЙ','',`<div class="msg">загрузка друзей…</div><div class="grid">${skCards(10)}</div>`);
+  const fr = await friendsOf(u.id), th = {};
+  out.innerHTML = (fr.length ? panel('ГРАФ ДРУЗЕЙ',`${esc(u.name)} · ${fr.length} друзей · клик по узлу — открыть игрока`,'<canvas id="cv"></canvas>') : '')+
+    panel('ПРОВОДНИК ДРУЗЕЙ','',`<div class="msg">друзей: ${fr.length}</div><input id="flt" placeholder="фильтр по нику" style="width:100%;margin-bottom:14px"><div class="grid" id="fg"></div>`);
+  const draw = () => {
+    if (!$('#flt')) return;
+    const t = $('#flt').value.toLowerCase();
+    $('#fg').innerHTML = fr.filter(f=>(f.name+f.displayName).toLowerCase().includes(t)).map(f =>
+      `<div class="card">${th[f.id] ? `<img loading="lazy" src="${esc(th[f.id])}" alt="" onclick="act('profile','${f.id}')">` : `<div class="sk" style="aspect-ratio:1;cursor:pointer" onclick="act('profile','${f.id}')"></div>`}<span>${esc(f.displayName)}</span><span style="color:var(--mu)">@${esc(f.name)}</span></div>`).join('')
+      || '<div class="msg">никого нет (список друзей скрыт или пуст)</div>';
+  };
+  $('#flt').oninput = draw; draw();
+  window.FRX = fr;
+  $('#fg').insertAdjacentHTML('beforebegin', '<div class="bar"><button class="sm" onclick="exportFr()">Экспорт CSV</button></div>');
+  const ids = fr.map(f => f.id);
+  heads(ids).then(async m => { Object.assign(th, m); draw(); const miss = ids.filter(i => !th[i]); if (miss.length){ await sleep(1500); Object.assign(th, await heads(miss)); draw(); } });
+  if (fr.length && $('#cv')) graph(u, fr.slice(0,48));
+}, root);}
+function graph(u, fr){
+  const c = $('#cv'), d = devicePixelRatio||1, W = c.clientWidth, H = c.clientHeight;
+  c.width = W*d; c.height = H*d;
+  const x = c.getContext('2d'); x.scale(d,d);
+  const cx = W/2, cy = H/2, R = Math.min(W,H)/2-50;
+  const nodes = fr.map((f,i)=>({f, x:cx+R*Math.cos(i/fr.length*6.283), y:cy+R*Math.sin(i/fr.length*6.283)}));
+  x.strokeStyle='#333'; nodes.forEach(n=>{x.beginPath();x.moveTo(cx,cy);x.lineTo(n.x,n.y);x.stroke()});
+  x.fillStyle='#fff'; x.beginPath(); x.arc(cx,cy,10,0,7); x.fill();
+  x.font='10px monospace'; x.textAlign='center'; x.fillText(u.name,cx,cy+26);
+  nodes.forEach(n=>{x.fillStyle='#0b0b0b';x.strokeStyle='#fff';x.beginPath();x.arc(n.x,n.y,6,0,7);x.fill();x.stroke();x.fillStyle='#aaa';x.fillText(n.f.name.slice(0,14),n.x,n.y+19)});
+  c.onclick = e => {
+    const r = c.getBoundingClientRect(), mx = e.clientX-r.left, my = e.clientY-r.top;
+    const n = nodes.find(n=>Math.hypot(n.x-mx,n.y-my)<14);
+    if (n) act('friends', String(n.f.id));
+  };
+}
+
+
+async function pgMod(arg, root){ userTab('mod', arg, async (u, out) => {
+  const [chk,hi,gr,th,av] = await Promise.allSettled([
+    api('users','/v1/usernames/users', post({usernames:[u.name],excludeBannedUsers:true})),
+    api('users',`/v1/users/${u.id}/username-history?limit=50`),
+    api('groups',`/v2/users/${u.id}/groups/roles`),
+    api('thumbnails',`/v1/users/avatar-headshot?userIds=${u.id}&size=150x150&format=Png`),
+    api('thumbnails',`/v1/users/avatar?userIds=${u.id}&size=420x420&format=Png`)
+  ]);
+  const hidden = val(chk, r=>!r.data.length, false);
+  const thState = val(th, r=>r.data[0]?.state, '—');
+  const banned = u.isBanned || hidden;
+  const place = ls.g('lastgame','10202515720');
+  const sig = (name, bad, txt) => row(name, bad ? `<span class="err">${txt[0]}</span>` : `<span class="ok">${txt[1]}</span>`);
+  out.innerHTML = `<div class="mod"><div>`+
+    panel('BAN ROBLOX',esc(u.name),
+      `<div class="verdict ${banned?'bad':'good'}">${banned?'ЗАБЛОКИРОВАН':'АКТИВЕН'}</div>`+
+      sig('isBanned в профиле', u.isBanned, ['да','нет'])+
+      sig('исчез из поиска', hidden, ['да','нет'])+
+      row('состояние аватара', esc(thState))+
+      row('id', u.id)+row('создан', dt(u.created))+
+      row('прошлые ники', val(hi,r=>r.data.map(x=>esc(x.name)).join(', ')||'нет'))+
+      row('групп', val(gr,r=>r.data.length))+
+      `<div class="msg" style="font-size:11px">Для чужого аккаунта Roblox публично отдаёт только текущий статус бана. Причины и историю нарушений видит лишь владелец аккаунта.</div>`+
+      `<div class="bar"><a class="btn" target="_blank" rel="noopener" href="https://www.roblox.com/users/${u.id}/profile">Roblox</a><button onclick="act('profile','${u.id}')">Профиль</button></div>`)+
+    panel('ИСТОРИЯ НАРУШЕНИЙ ROBLOX','','<div id="myv"><div class="msg">загрузка…</div></div>')+
+    `</div><div>`+
+    panel('ДОСТУПНОСТЬ ИГРЫ И ИГРОК В ПЛЕЙСЕ','',
+      `<form class="bar" onsubmit="event.preventDefault();checkGame($('#mg').value)"><input id="mg" placeholder="Place ID игры" value="${esc(place)}"><button>Проверить</button></form><div id="mgr"></div>`)+
+    panel('БАН В ИГРЕ (OPEN CLOUD)','',
+      `<input id="ock" type="password" placeholder="Open Cloud API-ключ (user-restrictions)" style="width:100%;margin-bottom:10px" value="${esc(ls.g('ockey',''))}"><div class="bar"><button onclick="ocCheck(false)">Проверить игрока</button><button onclick="ocCheck(true)">Все баны игры</button></div><div id="ocr"></div>`)+
+    panel('ЖУРНАЛ БАНОВ В ИГРАХ','Игры не публикуют свои баны — журнал ведётся вручную и хранится в браузере',
+      `<form class="bar" onsubmit="addBan(event,${u.id})"><input id="bp" placeholder="Place ID" value="${esc(place)}"><input id="br" placeholder="Причина / срок"><button>Добавить</button></form><div id="bl"></div>
+       <button onclick="exportBans()">Экспорт JSON</button>`)+
+    `</div></div>`;
+  renderBans(); checkGame(place); myViolations(u);
+}, root);}
+async function checkGame(pid){
+  const out = $('#mgr'); pid = String(pid).trim();
+  if (!/^\d+$/.test(pid)) { out.innerHTML = '<div class="msg err">Нужен числовой Place ID</div>'; return; }
+  out.innerHTML = '<div class="msg">проверка…</div>';
+  try{
+    const uni = await placeToUniverse(pid);
+    const [pl,g] = await Promise.allSettled([
+      api('games',`/v1/games/multiget-playability-status?universeIds=${uni}`),
+      api('games',`/v1/games?universeIds=${uni}`)
+    ]);
+    const p = val(pl,r=>r[0],{}), st = p.playabilityStatus||'—', open = p.isPlayable || st==='GuestProhibited' || st==='Playable';
+    out.innerHTML = row('игра',val(g,r=>esc(r.data[0]?.name),'—'))+row('universe id',uni)+
+      row('игра открыта',open?'<span class="ok">да</span>':'<span class="err">нет</span>')+row('статус Roblox',esc(st))+
+      `<div class="bar" style="margin-top:12px"><button onclick="banInPlace('${pid}')">Проверить игрока в этом плейсе</button></div><div id="bpr"></div>`;
+  }catch(e){ out.innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+}
+async function banInPlace(pid){
+  const o = $('#bpr'); if (!CUR) return; o.innerHTML = '<div class="msg">ищу игрока на серверах…</div>';
+  try{
+    const target = await headOf(CUR.id), s = await scanGame(pid, target, 5, {aborted:false});
+    o.innerHTML = s ? `<div class="verdict good">НЕ ЗАБАНЕН · СЕЙЧАС В ИГРЕ</div>`+row('job id',`<span class="jid">${esc(s.id)}</span>`)+`<div class="bar"><a class="btn" href="${joinUrl(pid,s.id)}">Зайти к нему</a></div>`
+      : `<div class="verdict">НЕ ПОДТВЕРЖДЕНО</div><div class="msg err">Игрок не найден на публичных серверах (до 5 страниц). Roblox не публикует баны внутри игр, поэтому бан не подтверждён и не исключён.</div>`;
+  }catch(e){ o.innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+}
+async function renderBans(){
+  if (!CUR || !$('#bl')) return;
+  const uid = CUR.id; let l = ls.g('banlog',[]).filter(x => x.uid==uid), note = '';
+  try{
+    const rm = await dbGet('banlog/'+uid), seen = new Set();
+    l = [...l, ...Object.values(rm||{})].filter(x => x && x.t).filter(x => { const k = x.t+'|'+x.place+'|'+x.reason; return !seen.has(k) && seen.add(k); }).sort((a,b)=>a.t-b.t);
+  }catch{ note = '<div class="msg" style="font-size:11px">облако недоступно — показан локальный журнал</div>'; }
+  if (!$('#bl')) return;
+  $('#bl').innerHTML = (l.map(x=>row(`${dt(x.t)} · place ${esc(x.place)}`,esc(x.reason))).join('') || '<div class="msg">записей нет</div>') + note;
+}
+function addBan(e,uid){
+  e.preventDefault();
+  const x = {uid,place:$('#bp').value.trim(),reason:$('#br').value.trim()||'—',t:Date.now()};
+  const l = ls.g('banlog',[]); l.push(x); ls.s('banlog',l); $('#br').value = '';
+  renderBans(); dbPush('banlog/'+uid, x).then(renderBans);
+}
+function exportBans(){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(ls.g('banlog',[]),null,2)],{type:'application/json'})); a.download='banlog.json'; a.click(); }
+
+
+const FALLBACK_SORTS = [['top-playing-now','Популярное сейчас'],['up-and-coming','Набирающие популярность'],['top-revisited','Часто возвращаются'],['top-rated','Лучшие по оценкам']];
+async function pgCharts(){
+  $('#app').innerHTML = panel('CHARTS','Топы игр с фильтрами. Поиск по названию заменяет чарт поисковой выдачей',
+    `<div class="bar"><select id="cs"></select><label>онлайн от <input type="number" id="cmin" min="0" placeholder="0"></label><label>до <input type="number" id="cmax" min="0" placeholder="∞"></label><label>страниц <input type="number" id="cpg" value="3" min="1" max="10"></label></div>
+     <div class="bar"><input id="cq" placeholder="Поиск по названию (необязательно)"><input id="cph" placeholder="Фразы в названии/описании через запятую"><select id="cmode" style="flex:none"><option value="all">все фразы</option><option value="any">любая фраза</option></select><button onclick="runCharts()">Показать</button></div>`)+
+    `<div id="cres"></div>`;
+  $('#cs').innerHTML = FALLBACK_SORTS.map(([k,n])=>`<option value="${k}">${n}</option>`).join('');
+  api('apis',`/explore-api/v1/get-sorts?sessionId=${sess()}&device=computer&country=all`).then(r => {
+    const s = (r.sorts||[]).filter(x => x.sortId && (!x.contentType || x.contentType==='Games'));
+    if (s.length) $('#cs').innerHTML = s.map(x=>`<option value="${esc(x.sortId)}">${esc(x.sortDisplayName||x.sortId)}</option>`).join('');
+  }).catch(()=>{});
+  $('#cq').onkeydown = e => { if (e.key==='Enter') runCharts(); };
+  runCharts();
+}
+async function runCharts(){
+  const box = $('#cres'); box.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const q = $('#cq').value.trim(), pages = Math.min(10, +$('#cpg').value||1);
+    const min = $('#cmin').value===''?0:+$('#cmin').value, max = $('#cmax').value===''?Infinity:+$('#cmax').value;
+    const phr = $('#cph').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean), all = $('#cmode').value==='all';
+    let items = q ? await omniSearch(q, pages) : await exploreSort($('#cs').value, pages);
+    const seen = new Set(); items = items.filter(g => g.u && !seen.has(g.u) && seen.add(g.u));
+    for (let i=0;i<items.length;i+=50){
+      try{
+        const r = await api('games',`/v1/games?universeIds=${items.slice(i,i+50).map(g=>g.u).join()}`);
+        r.data.forEach(d => { const g = items.find(x=>x.u===d.id); if (g){ g.on = d.playing; g.pl = d.rootPlaceId||g.pl; g.d = d.description||''; g.n = d.name||g.n; } });
+      }catch{}
+    }
+    items = items.filter(g => g.on>=min && g.on<=max);
+    if (phr.length) items = items.filter(g => { const t = (g.n+' '+g.d).toLowerCase(); return all ? phr.every(p=>t.includes(p)) : phr.some(p=>t.includes(p)); });
+    items.sort((a,b)=>b.on-a.on);
+    const ic = {};
+    for (let i=0;i<items.length;i+=100){
+      try{ (await api('thumbnails',`/v1/games/icons?universeIds=${items.slice(i,i+100).map(g=>g.u).join()}&size=150x150&format=Png`)).data.forEach(d=>ic[d.targetId]=d.imageUrl); }catch{}
+    }
+    box.innerHTML = panel('РЕЗУЛЬТАТ',`найдено: ${items.length}`, items.length ? `<div class="tw"><table><thead><tr><th></th><th>ИГРА</th><th>ОНЛАЙН</th><th>ОЦЕНКА</th><th>PLACE ID</th><th>ДЕЙСТВИЯ</th></tr></thead><tbody>`+
+      items.map(g=>{ const t=g.up+g.dn; return `<tr ${g.pl?`class="clk" onclick="goto('game','${g.pl}')"`:''}><td><img class="ico" src="${esc(ic[g.u]||'')}" alt=""></td><td>${esc(g.n)}</td><td>${fmt(g.on)}</td><td>${t?Math.round(g.up/t*100)+'%':'—'}</td><td>${g.pl||'—'}</td>
+        <td>${g.pl?`<button class="sm" onclick="event.stopPropagation();goto('game','${g.pl}')">Открыть</button> <a class="btn sm" onclick="event.stopPropagation()" href="${joinUrl(g.pl)}">Играть</a> <button class="sm" onclick="event.stopPropagation();cp('${g.pl}')">ID</button>`:''}</td></tr>`; }).join('')+`</tbody></table></div>` : '<div class="msg">Ничего не найдено. Ослабьте фильтры или увеличьте число страниц.</div>');
+  }catch(e){ errBox(box, e.message); }
+}
+
+
+function spark(h){
+  if (h.length<2) return '';
+  const mx = Math.max(...h.map(x=>x.p),1), mn = Math.min(...h.map(x=>x.p)), rg = (mx-mn)||1;
+  const ln = h.map((x,i)=>(i/(h.length-1)*300).toFixed(1)+','+(8+(1-(x.p-mn)/rg)*44).toFixed(1)).join(' ');
+  return `<svg viewBox="0 0 300 60" preserveAspectRatio="none"><defs><linearGradient id="sgf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`+
+    [15,30,45].map(y=>`<line x1="0" x2="300" y1="${y}" y2="${y}" stroke="#222" vector-effect="non-scaling-stroke"/>`).join('')+
+    `<polygon points="0,60 ${ln} 300,60" fill="url(#sgf)"/><polyline points="${ln}" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function statsHtml(h){
+  const v = h.map(x=>x.p);
+  return row('замеров',h.length)+row('минимум',fmt(Math.min(...v)))+row('максимум',fmt(Math.max(...v)))+
+    row('среднее',fmt(Math.round(v.reduce((a,b)=>a+b,0)/v.length)))+row('первый замер',new Date(h[0].t).toLocaleString('ru-RU'));
+}
+function paintOnline(p, h){
+  if (!$('#onl')) return;
+  $('#onl').textContent = fmt(p); $('#spk').innerHTML = spark(h) + (h.length>1 ? `<em class="spl t">${fmt(Math.max(...h.map(x=>x.p)))}</em><em class="spl b">${fmt(Math.min(...h.map(x=>x.p)))}</em>` : ''); $('#ost').innerHTML = statsHtml(h);
+  const prev = h[h.length-2];
+  $('#chg').textContent = prev ? `ИЗМЕНЕНИЕ: ${p-prev.p>=0?'+':''}${p-prev.p} К ПРЕДЫДУЩЕМУ ЗАМЕРУ` : 'ПЕРВЫЙ ЗАМЕР СОЗДАН, ИЗМЕНЕНИЕ ПОЯВИТСЯ ПОСЛЕ СЛЕДУЮЩИХ';
+}
+async function pollOnline(uni){
+  try{
+    const g = (await api('games',`/v1/games?universeIds=${uni}`)).data[0]; if (!g) return;
+    const pt = {t:Date.now(),p:g.playing}; window.HIST.push(pt); dbPush('hist/'+uni, pt);
+    ls.s('hist'+uni, window.HIST.slice(-300)); paintOnline(g.playing, window.HIST);
+  }catch{}
+}
+async function pgGame(arg, root){
+  const place = arg || ls.g('lastgame','10202515720');
+  const R = root || $('#app');
+  R.innerHTML = `<form class="bar" onsubmit="event.preventDefault();act('game',$('#gq').value.trim())"><input id="gq" placeholder="Place ID игры" value="${esc(place)}"><button>Открыть</button></form><div id="gm"></div>`;
+  const box = R.querySelector('#gm');
+  if (!/^\d+$/.test(place)) return errBox(box,'Нужен числовой Place ID');
+  ls.s('lastgame', place);
+  box.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const uni = await placeToUniverse(place);
+    const [gm,vt,pl] = await Promise.all([
+      api('games',`/v1/games?universeIds=${uni}`),
+      api('games',`/v1/games/votes?universeIds=${uni}`).catch(()=>null),
+      api('develop',`/v1/universes/${uni}/places?limit=100`).catch(()=>null)
+    ]);
+    const g = gm.data[0]; if (!g) throw new Error('Игра не найдена');
+    const gi = await api('thumbnails',`/v1/games/icons?universeIds=${uni}&size=150x150&format=Png`).catch(()=>null);
+    const pi = pl?.data?.length ? await api('thumbnails',`/v1/places/gameicons?placeIds=${pl.data.slice(0,100).map(p=>p.id).join()}&size=150x150&format=Png`).catch(()=>null) : null;
+    const icon = gi?.data?.[0]?.imageUrl || '', pic = {}; (pi?.data||[]).forEach(d => pic[d.targetId] = d.imageUrl);
+    const plOpts = (pl?.data?.length ? pl.data : [{id:place,name:g.name}]).map(p=>`<option value="${p.id}"${p.id==place?' selected':''}>${esc(p.name)} · ${p.id}</option>`).join('');
+    const v = vt?.data?.[0], tot = v ? v.upVotes+v.downVotes : 0, pct = tot ? Math.round(v.upVotes/tot*100) : 0;
+    let h = ls.g('hist'+uni,[]); const pt = {t:Date.now(),p:g.playing}; h.push(pt);
+    try{
+      await dbPush('hist/'+uni, pt);
+      const rh = await dbGet('hist/'+uni, '?orderBy="$key"&limitToLast=300');
+      const arr = rh ? Object.values(rh).filter(x => x && typeof x.t==='number' && typeof x.p==='number').sort((a,b)=>a.t-b.t) : [];
+      if (arr.length >= h.length) h = arr;
+    }catch{}
+    ls.s('hist'+uni, h.slice(-300));
+    box.innerHTML =
+      `<div class="bar" style="flex-wrap:nowrap;margin-bottom:14px"><img class="ico" style="width:72px;height:72px;flex:none" src="${esc(icon)}" alt=""><h2 class="t" style="margin:0">${esc(g.name)}</h2></div>
+       <div class="bar"><a class="btn" href="${joinUrl(place)}">Играть</a><a class="btn" target="_blank" rel="noopener" href="https://www.roblox.com/games/${place}">Страница Roblox</a>
+       <button data-n="${esc(g.name)}" onclick="fav('g','${place}',this.dataset.n)">Закрепить</button><button onclick="cp('${place}')">Place ID</button><button onclick="cp('${uni}')">Universe ID</button><button onclick="cp('${joinUrl(place)}')">Ссылка входа</button></div>
+       <div class="g2">`+
+      panel('СЕЙЧАС В ИГРЕ','',`<div class="big" id="onl"></div><div class="sp" id="spk"></div><div class="msg" id="chg" style="font-size:11px;letter-spacing:.15em"></div>
+        ${row('посещения',fmt(g.visits))}${row('избранное',fmt(g.favoritedCount))}${row('макс. игроков',g.maxPlayers)}
+        ${row('создатель',esc(g.creator?.name))}${row('жанр',esc(g.genre||'—'))}${row('создана',dt(g.created))}${row('обновлена',dt(g.updated))}${row('universe id',uni)}`)+
+      panel('РЕЙТИНГ И ОПИСАНИЕ','',`<div class="rate"><i style="width:${pct}%"></i></div><div class="lbl">${pct}% ПОЛОЖИТЕЛЬНЫХ${v?` · за ${fmt(v.upVotes)} · против ${fmt(v.downVotes)}`:''}</div>
+        <p class="lbl" style="margin-top:18px">ОПИСАНИЕ</p><div class="desc">${esc(g.description)}</div>`)+`</div>`+
+      panel('СТАТИСТИКА ОНЛАЙНА','Замеры копятся в вашем браузере, пока вкладка открыта (раз в 30 сек)',`<div id="ost"></div>`)+
+      (pl?.data?.length ? panel('SUBPLACES',`всего: ${pl.data.length}`,`<div class="tw" style="max-height:440px;overflow:auto"><table><thead><tr><th></th><th>NAME</th><th>PLACE ID</th><th>ДЕЙСТВИЯ</th></tr></thead><tbody>`+
+        pl.data.map(p=>`<tr><td><img class="ico" src="${esc(pic[p.id]||'')}" alt=""></td><td>${esc(p.name)}${p.id==place?' <span class="tag">текущий</span>':''}</td><td>${p.id}</td>
+        <td><a class="btn sm" href="${joinUrl(p.id)}">Зайти</a> <button class="sm" onclick="cp('${p.id}')">Копировать ID</button> <button class="sm" onclick="setPlace('${p.id}')">Серверы</button> <button class="sm" onclick="act('game','${p.id}')">Открыть</button></td></tr>`).join('')+`</tbody></table></div>`) : '')+
+      panel('ПОИСК ИГРОКА НА СЕРВЕРАХ','Сравнивает аватарку игрока с аватарками на публичных серверах (по токенам)',
+        `<form class="bar" onsubmit="findInGame(event)"><input id="pn" placeholder="Ник или ID" value="${esc(CUR?CUR.name:'')}"><button>Найти</button></form><div id="fres"></div>`)+
+      `<section class="p" id="srvp"><h3>PUBLIC SERVERS</h3><small id="scnt"></small>
+        <div class="pb"><div class="bar"><select id="spl" title="Place / Subplace" style="flex:2">${plOpts}</select><button id="more">Ещё серверы</button><button onclick="reloadServers()">Обновить</button><button onclick="joinPick('rand')">Случайный</button><button onclick="joinPick('empty')">Самый пустой</button><label><input type="checkbox" id="sav" checked> аватарки игроков</label><label><input type="checkbox" id="sauto"> автообновление</label></div>
+        <div class="chips" id="spre"><span class="msg">быстрые фильтры:</span><button class="sm" data-pre="ping">лучший пинг</button><button class="sm" data-pre="fps">лучший FPS</button><button class="sm" data-pre="few">мало игроков</button><button class="sm" data-pre="many">много игроков</button><button class="sm" data-pre="free">есть места</button><button class="sm" data-pre="reset">сбросить</button></div>
+        <div class="bar"><input id="sfl" placeholder="фильтр по Job ID"><label>игроков от <input type="number" id="smin" min="0"></label><label>до <input type="number" id="smax" min="0"></label><label>пинг до <input type="number" id="spng" min="0"></label>
+        <select id="smode" style="flex:none"><option value="all">все</option><option value="free">есть места</option><option value="full">заполнены</option><option value="hits">найденный игрок</option></select>
+        <select id="sort" style="flex:none"><option value="api">порядок Roblox</option><option value="pd">больше игроков</option><option value="pa">меньше игроков</option><option value="ping">лучший пинг</option><option value="fps">лучший FPS</option></select>
+        <select id="sper" style="flex:none"><option>10</option><option selected>20</option><option>50</option></select></div>
+        <div class="bar"><select id="scc" style="flex:none"><option value="">любая страна сервера</option></select><label><input type="checkbox" id="sacc" checked> определять страны автоматически</label><button onclick="detectCountries()">Определить сейчас</button><button onclick="joinPick('ping')">Войти на лучший пинг</button><button onclick="exportSrv()">Экспорт CSV</button><span class="msg" id="ccm"></span></div><div class="msg" id="avd" style="font-size:11px"></div>
+        <div class="tw"><table><thead><tr><th>JOB ID</th><th>ИГРОКИ</th><th>ПИНГ</th><th>FPS</th><th>СТРАНА</th><th>ДЕЙСТВИЯ</th></tr></thead><tbody id="srv"></tbody></table></div><div class="bar" id="pg" style="margin-top:12px"></div></div></section>`+
+      `<section class="p"><h3>PRIVATE SERVERS</h3>
+        <div class="pb"><div class="bar"><select id="pt" style="flex:none"><option value="private-servers">Private (VIP)</option><option value="servers/Friend">Серверы друзей</option></select><button onclick="loadPrivate()">Загрузить</button></div><div id="prvm"></div>
+        <div class="tw"><table><thead><tr><th>JOB ID</th><th>ИГРОКИ</th><th>ПИНГ</th><th>FPS</th><th>СТРАНА</th><th>ДЕЙСТВИЯ</th></tr></thead><tbody id="prv"></tbody></table></div></div></section>`;
+    window.HIST = h; paintOnline(g.playing, h);
+    window.SRV = {place, cursor:'', all:[], av:{}, target:'', tkey:'', hits:new Set(), priv:[], page:1, cc:ls.g('srvcc',{}), ccTry:{}, ccFail:0, ccBusy:false, ccN:0};
+    $('#sauto').onchange = e => { clearInterval(window.SA); if (e.target.checked) window.SA = setInterval(reloadServers, 30000); };
+    $('#more').onclick = loadServers; $('#spl').onchange = e => setPlace(e.target.value);
+    ['sfl','smin','smax','spng','smode','sort','sper','scc'].forEach(i => { const f = () => { SRV.page = 1; renderServers(); }; $('#'+i).addEventListener('input', f); $('#'+i).addEventListener('change', f); });
+    $('#sav').onchange = async () => { if ($('#sav').checked) await tokAv(SRV.all.flatMap(s=>s.playerTokens||[]), SRV.av); renderServers(); };
+    document.querySelectorAll('#spre [data-pre]').forEach(b => b.onclick = () => applyPre(b.dataset.pre));
+    $('#sacc').onchange = () => { SRV.ccFail = 0; renderServers(); };
+    loadServers();
+    window.GT = setInterval(()=>pollOnline(uni), 30000);
+  }catch(e){ errBox(box, e.message); }
+}
+const srvJoin = (place, s) => joinUrl(place, s.id) + (s.accessCode ? '&accessCode='+encodeURIComponent(s.accessCode) : '');
+function srvRow(s, S, showAv){
+  const av = showAv ? (s.playerTokens||[]).map(t => { const u = S.av[t]; return u ? `<img loading="lazy" src="${esc(u)}" class="${S.tkey && imgKey(u)===S.tkey ? 'me' : ''}" alt="" title="Игрок сервера">` : '<i title="Аватар загружается"></i>'; }).join('') : '';
+  const j = srvJoin(S.place, s);
+  return `<tr class="${S.hits.has(s.id)?'hit':''}" data-id="${esc(s.id)}"><td>${s.name?`<b>${esc(s.name)}</b><br>`:''}<span class="jid">${esc(s.id)}</span></td>
+    <td>${av?`<div class="avs">${av}</div>`:''}<small>${s.playing}/${s.maxPlayers}</small></td><td>${s.ping??'—'}</td><td>${s.fps?s.fps.toFixed(1):'—'}</td><td>${ccCell(s)}</td>
+    <td><a class="btn sm" href="${esc(j)}">Вход</a> <button class="sm" onclick="cp('${esc(j)}'.replace(/&amp;/g,'&'))">Ссылка</button> <button class="sm" onclick="cp('${esc(s.id)}')">Job ID</button></td></tr>`;
+}
+function srvFiltered(){
+  const S = window.SRV, f = ($('#sfl').value||'').toLowerCase().trim(), mn = $('#smin').value===''?0:+$('#smin').value, mx = $('#smax').value===''?1e9:+$('#smax').value, pm = +($('#spng')&&$('#spng').value)||0, m = $('#smode').value;
+  const l = S.all.filter(s => (!f || s.id.toLowerCase().includes(f)) && s.playing>=mn && s.playing<=mx && (!pm || (s.ping!=null && s.ping<=pm)) &&
+    (!$('#scc').value || (S.cc[s.id]&&S.cc[s.id].c===$('#scc').value)) && (m==='all' || (m==='free' && s.playing<s.maxPlayers) || (m==='full' && s.playing>=s.maxPlayers) || (m==='hits' && S.hits.has(s.id))));
+  const k = {pd:(a,b)=>b.playing-a.playing, pa:(a,b)=>a.playing-b.playing, ping:(a,b)=>(a.ping??1e9)-(b.ping??1e9), fps:(a,b)=>(b.fps||0)-(a.fps||0)}[$('#sort').value];
+  return k ? l.sort(k) : l;
+}
+function renderServers(noAuto){
+  const S = window.SRV; if (!S || !$('#srv')) return;
+  const showAv = $('#sav').checked, list = srvFiltered(), per = +$('#sper').value || 20, pages = Math.max(1, Math.ceil(list.length/per));
+  if (S.page > pages) S.page = pages;
+  $('#srv').innerHTML = list.slice((S.page-1)*per, S.page*per).map(s => srvRow(s, S, showAv)).join('') || '<tr><td colspan="6" class="msg">серверов по фильтрам нет</td></tr>';
+  $('#scnt').textContent = `place ${S.place} · загружено: ${S.all.length} · по фильтрам: ${list.length} · лист ${S.page}/${pages}`;
+  const pn = []; for (let i=1;i<=pages;i++) if (pages<=12 || i===1 || i===pages || Math.abs(i-S.page)<=2) pn.push(i);
+  $('#pg').innerHTML = '<span class="msg">ЛИСТ</span>' + pn.map((n,i) => (i && n-pn[i-1]>1 ? '<span class="msg">…</span>' : '') + `<button class="sm${n===S.page?' on':''}" onclick="SRV.page=${n};renderServers()">${n}</button>`).join('') +
+    (S.cursor ? '<span class="msg">· есть ещё серверы — «Ещё серверы»</span>' : '');
+  $('#more').disabled = !S.cursor;
+  const withTok = S.all.filter(s => (s.playerTokens||[]).length).length, allTok = new Set(S.all.flatMap(s => s.playerTokens||[])).size;
+  const got = Object.values(S.av).filter(Boolean).length, A = window.AVSTAT;
+  if ($('#avd')) $('#avd').textContent = `серверов с токенами: ${withTok}/${S.all.length} · игроков по токенам: ${allTok} · аватарок загружено: ${got}` +
+    (A.fail ? ` · ошибок запросов: ${A.fail} (${A.last})` : '') + (A.empty ? ` · без картинки: ${A.empty}${A.state?' ('+A.state+')':''}` : '');
+  renderPrivate();
+  if (!noAuto) autoCC();
+}
+function setPlace(id){
+  const S = window.SRV; if (!S) return;
+  Object.assign(S, {place:String(id), cursor:'', all:[], hits:new Set(), priv:[], page:1, ccTry:{}, ccFail:0});
+  if ($('#spl')) $('#spl').value = id; $('#srv').innerHTML = ''; $('#prv').innerHTML = '';
+  loadServers(); const t = $('#srvp'); if (t) t.scrollIntoView({behavior:'smooth'});
+}
+function renderPrivate(){ const S = window.SRV; if (S && $('#prv')) $('#prv').innerHTML = S.priv.map(s => srvRow(s, S, true)).join(''); }
+async function loadPrivate(){
+  const S = window.SRV, m = $('#prvm');
+  
+  m.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const r = await wjson('games', `/v1/games/${S.place}/${$('#pt').value}?limit=100`);
+    S.priv = (r && r.data) || [];
+    await tokAv(S.priv.flatMap(s => s.playerTokens||[]), S.av);
+    markHits(S.priv); renderServers();
+    m.innerHTML = `<div class="msg">найдено: ${S.priv.length}${S.priv.length?'':' (нет доступных серверов)'}</div>`;
+  }catch(e){ m.innerHTML = `<div class="msg err">Не удалось загрузить приватные серверы.</div>`; }
+}
+async function loadServers(){
+  const S = window.SRV, btn = $('#more'), pl = S.place; if (btn) btn.disabled = true;
+  for (let a=0;a<4;a++){
+    try{
+      $('#scnt').textContent = a ? `повторная попытка ${a}…` : 'загрузка серверов…';
+      const r = await api('games',`/v1/games/${pl}/servers/Public?limit=100&sortOrder=Desc${S.cursor?'&cursor='+encodeURIComponent(S.cursor):''}`);
+      if (S.place !== pl) return [];
+      S.cursor = r.nextPageCursor||''; S.all.push(...r.data); renderServers();
+      if ($('#sav').checked || S.tkey){
+        await tokAv(r.data.flatMap(s=>s.playerTokens||[]), S.av);
+        markHits(r.data); renderServers();
+      }
+      return r.data;
+    }catch(e){
+      if (a===3){ $('#scnt').textContent = 'Ошибка: '+e.message+' — нажмите «Обновить»'; if (btn) btn.disabled = false; return []; }
+      await sleep(1500*(a+1));
+    }
+  }
+}
+function reloadServers(){ const S = window.SRV; S.cursor=''; S.all=[]; S.hits=new Set(); S.page=1; $('#srv').innerHTML=''; loadServers(); }
+function markHits(servers){
+  const S = window.SRV; if (!S.tkey) return null; let first = null;
+  servers.forEach(s => { if ((s.playerTokens||[]).some(t => S.av[t] && imgKey(S.av[t]) === S.tkey)){ S.hits.add(s.id); first = first || s; } });
+  return first;
+}
+async function findInGame(e){
+  e.preventDefault(); const out = $('#fres'), S = window.SRV; out.innerHTML = '<div class="msg">ищу…</div>';
+  try{
+    const u = await resolveUser($('#pn').value); CUR = u;
+    S.target = await headOf(u.id); S.tkey = imgKey(S.target); S.hits = new Set();
+    await tokAv(S.all.flatMap(s => s.playerTokens||[]), S.av);
+    let hit = markHits(S.all), n = 0;
+    if (S.priv.length){ const ph = markHits(S.priv); hit = hit || ph; }
+    while (!hit && S.cursor && n++ < 40){
+      out.innerHTML = `<div class="msg">ищу… просканировано серверов: ${S.all.length}</div>`;
+      const page = await loadServers(); hit = markHits(page);
+    }
+    renderServers();
+    const got = Object.values(S.av).filter(Boolean).length;
+    out.innerHTML = `<div class="bar"><img class="ico" src="${esc(S.target)}" alt=""></div>`+
+      row('игрок',esc(u.name))+row('статус',hit?'<span class="ok">в игре</span>':'не найден')+
+      row('совпадений серверов',S.hits.size)+row('аватарок серверов сравнено',got)+
+      row('job id',hit?`<span class="jid">${esc(hit.id)}</span>`:'—')+
+      (hit?`<div class="bar"><a class="btn" href="${esc(srvJoin(S.place,hit))}">Зайти к нему</a><button onclick="cp('${esc(hit.id)}')">Job ID</button></div>`:'')+
+      (!got ? '<div class="msg err">'+(S.all.length && !S.all.some(x=>(x.playerTokens||[]).length) ? 'Roblox не отдал токены игроков (воркер должен запрашивать серверы с авторизацией).' : 'Не удалось сравнить аватарки на серверах. Попробуйте ещё раз.')+'</div><div class="msg" style="font-size:12px;word-break:break-all">диагностика: серверов '+S.all.length+', с токенами '+S.all.filter(x=>(x.playerTokens||[]).length).length+', токенов '+new Set(S.all.flatMap(x=>x.playerTokens||[])).size+', ошибок запросов '+AVSTAT.fail+(AVSTAT.last?' ('+esc(AVSTAT.last)+')':'')+', без картинки '+AVSTAT.empty+(AVSTAT.state?' ['+esc(AVSTAT.state)+']':'')+(AVSTAT.raw?'<br>ответ: '+esc(AVSTAT.raw):'')+'</div>' : (hit ? '' : '<div class="msg">Игрок сейчас не в игре или не найден на просмотренных серверах.</div>'));
+    if (hit){
+      dbPush('sightings/'+u.id,{t:Date.now(),place:S.place,job:hit.id,name:document.querySelector('h2.t')?.textContent||''});
+      const tr = document.querySelector(`tr[data-id="${hit.id}"]`); if (tr) tr.scrollIntoView({block:'center'});
+    }
+  }catch(err){ out.innerHTML = `<div class="msg err">${esc(err.message)}</div>`; }
+}
+
+
+
+const flag = c => c && c.length===2 ? String.fromCodePoint(...[...c.toUpperCase()].map(x => 0x1F1E6 + x.charCodeAt(0) - 65)) : '';
+function ccCell(s){ const S = window.SRV, c = S.cc[s.id]; if (c) return `<span class="cc">${esc(c.c)} · ${esc(c.n)}</span>`; if ($('#sacc') && $('#sacc').checked && S.ccFail<3) return '<span class="cc na">определяется…</span>'; return `<button class="sm" onclick="srvCC('${esc(s.id)}')">Страна</button>`; }
+async function srvCC(id, quiet){
+  const S = window.SRV; if (S.cc[id]) return S.cc[id];
+  if (!workerOn()){ if (!quiet) toast('Страна сервера недоступна'); throw new Error('worker'); }
+  const body = {placeId:+S.place, isTeleport:false, gameId:id, gameJoinAttemptId:sess()};
+  const go = tok => fetch(workerUrl('https://gamejoin.roblox.com/v1/join-game-instance'), {method:'POST', headers:{'Content-Type':'application/json', ...(tok?{'X-CSRF-TOKEN':tok}:{})}, body:JSON.stringify(body)});
+  let r = await go('');
+  if (r.status===403){ const t = r.headers.get('x-csrf-token'); if (t) r = await go(t); }
+  const j = await r.json().catch(()=>({}));
+  const ep = j.joinScript && j.joinScript.UdmuxEndpoints && j.joinScript.UdmuxEndpoints[0];
+  const ip = ep && ep.Address;
+  if (!ip){ if (!quiet) toast('Roblox не отдал адрес сервера'); throw new Error('noip'); }
+  const g = await (await fetch('https://ipwho.is/'+encodeURIComponent(ip))).json();
+  if (!g.success) throw new Error('geo');
+  S.cc[id] = {c:g.country_code, n:g.country}; ls.s('srvcc', S.cc);
+  if (!quiet){ fillCC(); renderServers(); }
+  return S.cc[id];
+}
+function fillCC(){
+  const S = window.SRV, sel = $('#scc'); if (!sel) return;
+  const cur = sel.value, m = new Map();
+  S.all.forEach(s => { const c = S.cc[s.id]; if (c) m.set(c.c, c.n); });
+  sel.innerHTML = '<option value="">любая страна сервера</option>' + [...m].sort((a,b)=>a[1].localeCompare(b[1])).map(([c,n]) => `<option value="${c}">${esc(n)}</option>`).join('');
+  sel.value = m.has(cur) ? cur : '';
+}
+async function detectCountries(){
+  const S = window.SRV, per = +$('#sper').value || 20, list = srvFiltered().slice((S.page-1)*per, S.page*per).filter(s => !S.cc[s.id]), m = $('#ccm');
+  if (!workerOn()){ toast('Страна сервера недоступна'); return; }
+  let ok = 0;
+  for (let i=0;i<list.length;i++){
+    m.textContent = `страны: ${i+1}/${list.length}`;
+    try{ await srvCC(list[i].id, true); ok++; if (ok%3===0){ fillCC(); renderServers(); } }catch(e){ if (e.message==='worker') break; }
+    await sleep(700);
+  }
+  m.textContent = list.length ? `определено: ${ok} из ${list.length}` : 'на этом листе всё определено';
+  fillCC(); renderServers();
+}
+function applyPre(p){
+  const set = (i,v) => { const e = $('#'+i); if (e) e.value = v; };
+  if (p==='reset'){ ['sfl','smin','smax','spng'].forEach(i => set(i,'')); set('smode','all'); set('sort','api'); set('scc',''); }
+  else if (p==='ping'){ set('sort','ping'); set('smode','free'); }
+  else if (p==='fps'){ set('sort','fps'); set('smode','free'); }
+  else if (p==='few'){ set('sort','pa'); set('smode','free'); set('smin','1'); }
+  else if (p==='many'){ set('sort','pd'); set('smode','free'); }
+  else if (p==='free'){ set('smode','free'); }
+  SRV.page = 1; renderServers();
+}
+
+async function autoCC(){
+  const S = window.SRV; if (!S || S.ccBusy || !$('#sacc') || !$('#sacc').checked || S.ccFail>=3) return;
+  S.ccBusy = true; const pl = S.place; let ok = 0;
+  try{
+    while (S.place===pl && $('#sacc') && $('#sacc').checked && S.ccN<150){
+      const per = +$('#sper').value || 20, vis = srvFiltered().slice((S.page-1)*per, S.page*per).concat(S.all).filter(s => !S.cc[s.id] && !S.ccTry[s.id]);
+      const s = vis[0]; if (!s) break;
+      S.ccTry[s.id] = 1; S.ccN++;
+      try{ await srvCC(s.id, true); ok++; S.ccFail = 0; }catch(e){ if (e.message==='worker' || ++S.ccFail>=3) break; }
+      const m = $('#ccm'); if (m) m.textContent = `страны: ${Object.keys(S.cc).filter(k => S.all.some(x => x.id===k)).length}/${S.all.length}`;
+      if (ok%2===1){ fillCC(); renderServers(true); }
+      await sleep(600);
+    }
+  } finally { S.ccBusy = false; }
+  if (S.ccFail>=3){ const m = $('#ccm'); if (m) m.textContent = 'страны серверов сейчас недоступны'; }
+  fillCC(); renderServers(true);
+}
+function pgCompare(){
+  $('#app').innerHTML = panel('СРАВНЕНИЕ ИГРОКОВ','',`<form class="bar" onsubmit="event.preventDefault();runCompare()"><input id="ca" placeholder="Ник или ID №1"><input id="cb" placeholder="Ник или ID №2"><button>Сравнить</button></form><div id="cmpres"></div>`);
+}
+async function runCompare(){
+  const o = $('#cmpres'); o.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const us = await Promise.all([resolveUser($('#ca').value), resolveUser($('#cb').value)]);
+    const cn = (u,p) => api('friends',`/v1/users/${u.id}/${p}/count`).then(r=>r.count).catch(()=>null);
+    const st = await Promise.all(us.map(async u => { const [f,fo,fi,gr,hd] = await Promise.all([cn(u,'friends'),cn(u,'followers'),cn(u,'followings'),
+      api('groups',`/v2/users/${u.id}/groups/roles`).then(r=>r.data.length).catch(()=>null), headOf(u.id).catch(()=>'')]); return {u,f,fo,fi,gr,hd}; }));
+    const days = u => Math.floor((Date.now()-new Date(u.created))/864e5);
+    const best = (k, g) => { const a = g(st[0]), b = g(st[1]); return a==null||b==null||a===b ? ['',''] : (a>b ? [' class="ok"',''] : ['',' class="ok"']); };
+    const rows = [['аватар',s=>s.hd?`<img class="ico" src="${esc(s.hd)}" alt="">`:'—'],['ник',s=>esc(s.u.name)],['id',s=>s.u.id],['создан',s=>dt(s.u.created)],
+      ['возраст, дней',s=>fmt(days(s.u)),s=>days(s.u)],['друзья',s=>fmt(s.f),s=>s.f],['подписчики',s=>fmt(s.fo),s=>s.fo],['подписки',s=>fmt(s.fi),s=>s.fi],['группы',s=>fmt(s.gr),s=>s.gr],['бан Roblox',s=>s.u.isBanned?'<span class="err">да</span>':'нет']];
+    o.innerHTML = panel('РЕЗУЛЬТАТ','',`<div class="tw"><table><thead><tr><th></th><th>${esc(st[0].u.name)}</th><th>${esc(st[1].u.name)}</th></tr></thead><tbody>`+
+      rows.map(([k,f,g])=>{ const c = g ? best(k,g) : ['','']; return `<tr><td>${k}</td><td${c[0]}>${f(st[0])}</td><td${c[1]}>${f(st[1])}</td></tr>`; }).join('')+`</tbody></table></div>`);
+  }catch(e){ errBox(o, e.message); }
+}
+function exportSrv(){
+  const S = window.SRV, c = 'job_id,players,max,ping,fps,country\n' + srvFiltered().map(s => [s.id,s.playing,s.maxPlayers,s.ping??'',s.fps?s.fps.toFixed(1):'',(S.cc[s.id]||{}).n||''].map(x => '"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c],{type:'text/csv'})); a.download = 'servers_'+S.place+'.csv'; a.click();
+}
+function exportFav(){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(ls.g('wl',{p:[],g:[]}),null,2)],{type:'application/json'})); a.download = 'favorites.json'; a.click(); }
+function importFav(){
+  const i = document.createElement('input'); i.type = 'file'; i.accept = '.json';
+  i.onchange = async () => { try{ const j = JSON.parse(await i.files[0].text()), w = ls.g('wl',{p:[],g:[]});
+    ['p','g'].forEach(k => (j[k]||[]).forEach(x => { if (x && x.id && !w[k].some(y => y.id==x.id)) w[k].push({id:String(x.id), n:String(x.n||x.id)}); }));
+    ls.s('wl', w); pgFav(); toast('Импортировано'); }catch{ toast('Неверный файл'); } };
+  i.click();
+}
+addEventListener('keydown', e => { if (e.key==='/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ const q = $('#q')||$('#gq')||$('#mk')||$('#cq'); if (q){ e.preventDefault(); q.focus(); q.select(); } } });
+
+
+
+const BLOX_KEY = '';
+const BLOX_GUILD = '';
+function pgBlox(arg, root){
+  (root || $('#app')).innerHTML = `<div class="g2">`+panel('DISCORD В ROBLOX','',`<form class="bar" onsubmit="event.preventDefault();blox('d2r')"><input id="bd" placeholder="Discord ID" value="${/^\d{15,}$/.test(arg||'')?esc(arg):''}"><button>Найти Roblox</button></form><div id="bres1"></div>`)+
+    panel('ROBLOX В DISCORD','',`<form class="bar" onsubmit="event.preventDefault();blox('r2d')"><input id="br2" placeholder="Roblox ник или ID" value="${arg&&!/^\d{15,}$/.test(arg)?esc(arg):''}"><button>Найти Discord</button></form><div id="bres2"></div>`)+`</div>`;
+}
+async function blReq(url){
+  const h = {Authorization:BLOX_KEY};
+  let r;
+  try{ r = await fetch(url, {headers:h}); }catch{ r = await fetch(workerUrl(url), {headers:h}); }
+  const j = await r.json().catch(()=>({}));
+  if (r.status===404) return {};
+  if (!r.ok) throw new Error(j.error || j.message || 'HTTP '+r.status);
+  return j;
+}
+async function blox(mode){
+  const out=$(mode==='d2r'?'#bres1':'#bres2'), q=$(mode==='d2r'?'#bd':'#br2').value.trim();
+  if (!q){ out.innerHTML='<div class="msg err">Введите значение</div>'; return; }
+  if (!BLOX_KEY || !BLOX_GUILD){ out.innerHTML='<div class="msg">Сервис Bloxlink временно недоступен.</div>'; return; }
+  out.innerHTML='<div class="msg">запрос…</div>';
+  try{
+    const g = encodeURIComponent(BLOX_GUILD);
+    if (mode==='d2r'){
+      if (!/^\d{15,25}$/.test(q)) throw new Error('Введите числовой Discord ID');
+      const j = await blReq(`https://api.blox.link/v4/public/guilds/${g}/discord-to-roblox/${q}`);
+      const rid = j.robloxID; let ru = j.resolved?.roblox;
+      if (!rid){ out.innerHTML = '<div class="msg">Аккаунт не привязан</div>'; return; }
+      if (!ru) ru = await api('users','/v1/users/'+rid).catch(()=>null);
+      out.innerHTML = row('Roblox ID',esc(rid))+row('ник',esc(ru?.name||'—'))+row('отображаемое имя',esc(ru?.displayName||'—'))+`<div class="bar"><button onclick="act('profile','${esc(rid)}')">Профиль</button></div>`;
+    } else {
+      const u = await resolveUser(q), j = await blReq(`https://api.blox.link/v4/public/guilds/${g}/roblox-to-discord/${u.id}`), ids = j.discordIDs||[];
+      out.innerHTML = row('Roblox',esc(u.name)+' · '+u.id)+(ids.length ? ids.map(d=>row('Discord ID',esc(d))+row('Discord-ник',esc(j.resolved?.discord?.[d]?.user?.username||j.resolved?.discord?.[d]?.nick||'—'))).join('') : '<div class="msg">Discord не привязан</div>');
+    }
+  }catch(e){ out.innerHTML = `<div class="msg err">Ошибка: ${esc(e.message)}</div>`; }
+}
+
+
+async function wjson(sub, path){
+  const r = await fetch(workerUrl(`https://${sub}.roblox.com${path}`));
+  const t = await r.text(); let j = null; try{ j = t ? JSON.parse(t) : null; }catch{}
+  if (!r.ok) throw new Error((j && (j.errors?.[0]?.message || j.message)) || 'HTTP '+r.status);
+  return j;
+}
+const VK = {punishmentTypeDescription:'тип наказания',beginDate:'начало',endDate:'окончание',messageToUser:'сообщение Roblox',badUtterances:'нарушения',isAppealable:'можно обжаловать',hasAppealed:'обжаловано',punishmentId:'id наказания',reviewer:'проверяющий'};
+function kv(o){
+  return Object.entries(o).filter(([,v])=>v!=null && v!=='' && !(Array.isArray(v)&&!v.length)).map(([k,v]) => {
+    const s = (/date/i.test(k) && !isNaN(Date.parse(v))) ? new Date(v).toLocaleString('ru-RU') : (typeof v==='object' ? esc(JSON.stringify(v)) : esc(v));
+    return row(esc(VK[k]||k), s);
+  }).join('');
+}
+async function myViolations(u){
+  const box = $('#myv'); if (!box) return;
+  if (!workerOn()){
+    box.innerHTML = '<div class="msg">История нарушений недоступна.</div>';
+    return;
+  }
+  try{
+    let me = null;
+    try{ me = await wjson('users','/v1/users/authenticated'); }catch{}
+    if (!me || !me.id){ box.innerHTML = '<div class="msg">История нарушений недоступна.</div>'; return; }
+    let head = '';
+    if (String(me.id) !== String(u.id)) head += '<div class="msg">Roblox показывает историю нарушений только владельцу аккаунта.</div>';
+    const v = await wjson('usermoderation','/v1/not-approved');
+    const arr = Array.isArray(v) ? v : ((v && (v.data||v.items||v.violations||v.punishments)) || (v && Object.keys(v).length ? [v] : []));
+    box.innerHTML = head + (arr.length ? arr.map(x=>`<div style="border:1px solid var(--ln);padding:8px 12px;margin-top:10px">${kv(x)}</div>`).join('') : '<div class="msg ok">Нарушений нет</div>');
+  }catch(e){ box.innerHTML = `<div class="msg err">Ошибка: ${esc(e.message)}</div>`; }
+}
+
+async function loadSightings(uid){
+  const b = $('#sight'); if (!b) return;
+  try{
+    const r = await dbGet('sightings/'+uid, '?orderBy="$key"&limitToLast=5');
+    const a = Object.values(r||{}).filter(x=>x&&x.t).sort((x,y)=>y.t-x.t);
+    if (a.length) b.innerHTML = '<p class="lbl" style="margin-top:14px">ПОСЛЕДНИЕ ОБНАРУЖЕНИЯ</p>' + a.map(x => {
+      const pl = String(x.place).replace(/\D/g,''), jb = String(x.job||'').replace(/[^0-9a-fA-F-]/g,'');
+      return row(esc(new Date(x.t).toLocaleString('ru-RU'))+' · '+esc(x.name||pl), `<a class="btn sm" href="${joinUrl(pl,jb)}">Сервер</a> <button class="sm" onclick="act('game','${pl}')">Игра</button>`);
+    }).join('');
+  }catch{}
+}
+
+
+function act(tab, arg){ if (tab === window.TABCUR){ closeModal(); goto(tab, arg); } else openModal(tab, arg); }
+function closeModal(){
+  const m = $('#mdl2'); if (!m) return;
+  if (window.MT === 'game') clearInterval(window.GT);
+  if (window.SCAN) window.SCAN.abort();
+  m.remove(); window.MT = '';
+}
+function openModal(tab, arg){
+  closeModal();
+  const d = document.createElement('div'); d.id = 'mdl2';
+  d.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:15;overflow:auto;padding:20px';
+  d.innerHTML = `<div style="max-width:1240px;margin:0 auto"><div class="bar"><button onclick="closeModal()">Закрыть</button></div><div id="mroot"></div></div>`;
+  document.body.appendChild(d); window.MT = tab;
+  ({profile:pgProfile,friends:pgFriends,mod:pgMod,game:pgGame,blox:pgBlox}[tab] || pgProfile)(arg, d.querySelector('#mroot'));
+}
+addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+
+function emo(s, st){ const b = {ri:0x1F1E6, sq:0x1F170, ci:0x24D0}[st]; return [...s].map(c => /[a-z]/.test(c) ? String.fromCodePoint(b + c.charCodeAt(0) - 97) : c).join(st==='ri' ? '\u200b' : ''); }
+function genLink(){
+  const a = $('#l1').value.trim(), b = $('#l2').value.trim(), o = $('#lo');
+  if (!a || !b){ o.value = ''; return; }
+  const m = /^(https?)(:\/\/.*)$/i.exec(a);
+  o.value = `[${m ? emo(m[1].toLowerCase(), $('#ls1').value) + m[2] : a}](${b})`;
+}
+function genJoin(){
+  const p = $('#jp').value.trim(), j = $('#jj').value.trim(), o = $('#jr');
+  if (!/^\d+$/.test(p)){ o.innerHTML = ''; return; }
+  const a = joinUrl(p, j), b = `https://www.roblox.com/games/start?placeId=${p}${j?'&gameInstanceId='+encodeURIComponent(j):''}`;
+  o.innerHTML = [a,b].map(x => `<div class="r"><span class="jid">${esc(x)}</span><button class="sm" data-c="${esc(x)}" onclick="cp(this.dataset.c)">Копировать</button></div>`).join('');
+}
+async function convPlace(){
+  const o = $('#cpr'), p = $('#cp1').value.trim();
+  if (!/^\d+$/.test(p)){ o.innerHTML = '<div class="msg err">Нужен числовой Place ID</div>'; return; }
+  o.innerHTML = '<div class="msg">…</div>';
+  try{ const u = await placeToUniverse(p); o.innerHTML = row('universe id', u) + `<div class="bar"><button onclick="cp('${u}')">Копировать</button><button onclick="act('game','${p}')">Открыть игру</button></div>`; }
+  catch(e){ o.innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+}
+const TA = 'width:100%;background:#0a0a0a;border:1px solid var(--ln);color:var(--tx);padding:11px 13px;font:inherit';
+function pgLinks(){
+  $('#app').innerHTML = panel('ГЕНЕРАТОР ССЫЛОК','',
+    `<input id="l1" placeholder="Ссылка 1 (https://…)" style="width:100%;margin-bottom:10px"><input id="l2" placeholder="Ссылка 2 (https://…)" style="width:100%;margin-bottom:10px">
+     <div class="bar"><select id="ls1" style="flex:none"><option value="sq">🅷🆃🆃🅿 квадраты</option><option value="ci">ⓗⓣⓣⓟ круги</option><option value="ri">🇭 🇹 🇹 🇵 буквы-флаги</option></select><button onclick="genLink();cp($('#lo').value)">Копировать</button></div>
+     <textarea id="lo" readonly rows="3" style="${TA}"></textarea>`);
+  ['l1','l2','ls1'].forEach(i => $('#'+i).addEventListener('input', genLink));
+}
+function pgIds(){
+  $('#app').innerHTML = panel('PLACE ID В UNIVERSE ID','',`<form class="bar" onsubmit="event.preventDefault();convPlace()"><input id="cp1" placeholder="Place ID"><button>Узнать</button></form><div id="cpr"></div>`);
+}
+function pgJoin(){
+  $('#app').innerHTML = panel('ССЫЛКА ВХОДА НА СЕРВЕР','',`<div class="bar"><input id="jp" placeholder="Place ID"><input id="jj" placeholder="Job ID (необязательно)"></div><div id="jr"></div>`);
+  ['jp','jj'].forEach(i => $('#'+i).addEventListener('input', genJoin));
+}
+const FP_URL = 'https://funpay.com/chips/99/';
+async function pgRobux(){
+  $('#app').innerHTML = panel('КУРС ROBUX · FUNPAY','',`<div class="bar"><label>мин. наличие <input type="number" id="fpm" value="1000" min="0"></label><button onclick="loadRobux()">Обновить</button><a class="btn" target="_blank" rel="noopener" href="${FP_URL}">FunPay</a></div><div id="rxr"></div>`)+
+    panel('КАЛЬКУЛЯТОР','',`<input id="rb" type="number" min="0" placeholder="Robux" style="width:100%"><div id="rbr"></div>`);
+  $('#rb').addEventListener('input', () => { const n = +$('#rb').value||0, r = window.RX; $('#rbr').innerHTML = r ? row('по самому дешёвому курсу',`${fmt(Math.round(n*r.rub/1000))} руб. / $${(n*r.usd/1000).toFixed(2)}`)+row('вывод DevEx ($0.0035 за R$)','$'+(n*0.0035).toFixed(2)) : ''; });
+  loadRobux();
+}
+async function fpDoc(url){
+  const tries = [
+    () => workerUrl(url),
+    () => 'https://corsproxy.io/?url='+encodeURIComponent(url),
+    () => 'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
+    () => 'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url)
+  ];
+  for (const t of tries){
+    try{
+      const r = await fetch(t()); if (!r.ok) continue;
+      const txt = await r.text(); if (!/tc-item/.test(txt)) continue;
+      return new DOMParser().parseFromString(txt,'text/html');
+    }catch{}
+  }
+  throw new Error('FunPay сейчас недоступен. Попробуйте ещё раз чуть позже.');
+}
+async function loadRobux(){
+  const o = $('#rxr'); o.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const d = await fpDoc(FP_URL), min = +$('#fpm').value||0;
+    const num = e => { if (!e) return NaN; const v = e.getAttribute('data-s'); return parseFloat(v!=null&&v!==''?v:String(e.textContent).replace(/\s/g,'').replace(/[^\d.,]/g,'').replace(',','.')); };
+    let rows = [...d.querySelectorAll('a.tc-item')].map(r => ({p:num(r.querySelector('.tc-price')), a:num(r.querySelector('.tc-amount')), u:(r.querySelector('.tc-price')?.textContent||'').trim(), n:(r.querySelector('.media-user-name')?.textContent||'').trim(), h:r.href})).filter(x => x.p>0);
+    if (!rows.length) throw new Error('На FunPay сейчас нет предложений.');
+    const big = rows.filter(x => !(x.a<min)); if (big.length) rows = big;
+    let cbr = {}; try{ cbr = (await (await fetch('https://www.cbr-xml-daily.ru/daily_json.js')).json()).Valute; }catch{}
+    const usdR = cbr.USD?.Value || 90, eurR = cbr.EUR?.Value || 100;
+    const cur = u => /\$/.test(u) ? 'usd' : /€/.test(u) ? 'eur' : 'rub';
+    const per = Math.min(...rows.map(x=>x.p)) < 5 ? 1000 : 1;
+    rows.forEach(x => { const v = x.p*per, c = cur(x.u); x.rub = c==='usd' ? v*usdR : c==='eur' ? v*eurR : v; x.usd = x.rub/usdR; });
+    rows.sort((a,b)=>a.rub-b.rub); const b = rows[0]; window.RX = b;
+    const tm = new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+    o.innerHTML = `<div class="lbl">САМЫЙ ДЕШЁВЫЙ КУРС ЗА 1000 ROBUX</div><div class="rx">${b.rub.toFixed(2)} руб. <span style="color:var(--mu)">/ $${b.usd.toFixed(3)}</span></div>`+row('продавец',esc(b.n||'—'))+row('в наличии',fmt(b.a))+row('курс доллара ЦБ',usdR.toFixed(2)+' руб.')+row('обновлено',tm)+
+      `<div class="tw" style="margin-top:14px"><table><thead><tr><th>ПРОДАВЕЦ</th><th>В НАЛИЧИИ</th><th>РУБ. ЗА 1000</th><th>USD ЗА 1000</th><th></th></tr></thead><tbody>${rows.slice(0,15).map(x=>`<tr><td>${esc(x.n||'—')}</td><td>${fmt(x.a)}</td><td>${x.rub.toFixed(2)}</td><td>${x.usd.toFixed(3)}</td><td><a class="btn sm" target="_blank" rel="noopener" href="${esc(x.h)}">Лот</a></td></tr>`).join('')}</tbody></table></div>`;
+    $('#rb').dispatchEvent(new Event('input'));
+  }catch(e){ errBoxFn(o, e.message, 'loadRobux()'); }
+}
+const errBoxFn = (el,m,fn) => { el.innerHTML = `<div class="msg err">Ошибка: ${esc(m)}</div><button onclick="${fn}">Повторить</button>`; };
+
+
+async function loadExtra(id, out){
+  const d = document.createElement('div'); out.appendChild(d);
+  d.innerHTML = panel('НАДЕТО НА АВАТАРЕ · СТОИМОСТЬ','',`<div id="wr">${row('цена всего скина','<span id="wtot"><span class="sk">R$ 00000</span></span>')}<div class="grid" id="wg">${skCards(8)}</div></div>`)+
+    panel('ЛИМИТЕДЫ ИГРОКА','','<div id="lm" class="msg">загрузка…</div>')+panel('ПОСЛЕДНИЕ БЕЙДЖИ','','<div id="bgs" class="msg">загрузка…</div>');
+  const q = s => d.querySelector(s);
+  api('badges',`/v1/users/${id}/badges?limit=25&sortOrder=Desc`).then(r => { const e = q('#bgs'); if (e){ e.className=''; e.innerHTML = (r.data||[]).map(b=>`<a class="tag" target="_blank" rel="noopener" href="https://www.roblox.com/badges/${b.id}">${esc(b.name)}</a>`).join('') || '<span class="msg">нет бейджей</span>'; } }).catch(() => { const e = q('#bgs'); if (e) e.textContent = 'бейджи недоступны'; });
+  api('inventory',`/v1/users/${id}/assets/collectibles?limit=100&sortOrder=Desc`).then(r => {
+    const cd = r.data||[], rap = cd.reduce((n,x)=>n+(x.recentAveragePrice||0),0), e = q('#lm'); if (!e) return;
+    e.className=''; e.innerHTML = row('предметов',cd.length)+row('общий RAP',`R$ ${fmt(rap)}`)+cd.slice(0,60).map(x=>`<a class="tag" target="_blank" rel="noopener" href="https://www.roblox.com/catalog/${x.assetId}">${esc(x.name)} · ${fmt(x.recentAveragePrice)}</a>`).join('');
+  }).catch(() => { const e = q('#lm'); if (e) e.innerHTML = '<span class="err">Инвентарь скрыт или недоступен</span>'; });
+  let as = [];
+  try{ as = (await api('avatar',`/v1/users/${id}/avatar`)).assets || []; }
+  catch{ const e = q('#wr'); if (e) e.innerHTML = '<div class="msg err">Не удалось загрузить одежду аватара</div>'; return; }
+  if (!q('#wg')) return;
+  if (!as.length){ q('#wr').innerHTML = '<div class="msg">на аватаре ничего нет</div>'; return; }
+  q('#wg').innerHTML = as.map(a=>`<div class="card" id="wa${a.id}"><a href="https://www.roblox.com/catalog/${a.id}" target="_blank" rel="noopener"><div class="im sk" style="aspect-ratio:1"></div></a><span>${esc(a.name)}</span><span class="pr sk">........</span></div>`).join('');
+  const loadTh = async (ids, n) => {
+    const left = [];
+    try{
+      const r = await api('thumbnails',`/v1/assets?assetIds=${ids.join()}&size=150x150&format=Png`);
+      (r.data||[]).forEach(x => { if (x.imageUrl){ const e = q('#wa'+x.targetId+' .im'); if (e) e.outerHTML = `<img src="${esc(x.imageUrl)}" alt="">`; } else left.push(x.targetId); });
+    }catch{ left.push(...ids); }
+    if (left.length && n<4){ await sleep(1200); return loadTh(left, n+1); }
+  };
+  loadTh(as.map(a=>a.id), 0);
+  let total = 0;
+  as.forEach(async a => {
+    let v = 0, t = '—';
+    try{
+      const e = await api('economy',`/v2/assets/${a.id}/details`);
+      if (e.IsLimited || e.IsLimitedUnique){ const r = await api('economy',`/v1/assets/${a.id}/resale-data`).catch(()=>({})); v = r.recentAveragePrice||0; t = 'RAP'; }
+      else { v = e.PriceInRobux||0; t = v ? 'R$' : (e.IsForSale ? 'бесплатно' : 'не продаётся'); }
+    }catch{}
+    const el = q('#wa'+a.id+' .pr'); if (el){ el.classList.remove('sk'); el.textContent = v ? t+' '+fmt(v) : t; }
+    total += v; const w = q('#wtot'); if (w) w.innerHTML = `<span class="ok">R$ ${fmt(total)}</span> ≈ $${(total*0.0035).toFixed(2)} (DevEx)`;
+  });
+}
+function exportFr(){
+  const c = 'id,name,displayName\n' + (window.FRX||[]).map(f => [f.id,f.name,f.displayName].map(x => '"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c],{type:'text/csv'})); a.download = 'friends.csv'; a.click();
+}
+function joinPick(m){
+  const S = window.SRV, l = srvFiltered().filter(s => s.playing < s.maxPlayers);
+  if (!l.length){ toast('нет серверов с местами'); return; }
+  const nz = l.filter(s => s.playing > 0), base = nz.length ? nz : l;
+  const s = m==='ping' ? l.reduce((a,b) => (b.ping??1e9)<(a.ping??1e9) ? b : a) : m==='rand' ? l[Math.floor(Math.random()*l.length)] : base.reduce((a,b) => b.playing<a.playing ? b : a);
+  toast(`сервер ${s.playing}/${s.maxPlayers}`); location.href = srvJoin(S.place, s);
+}
+function fav(k, id, n){
+  const w = ls.g('wl',{p:[],g:[]});
+  if (w[k].some(x => x.id==id)){ toast('Уже закреплено'); return; }
+  w[k].push({id:String(id), n}); ls.s('wl', w); toast('Закреплено');
+}
+function unfav(k, id){ const w = ls.g('wl',{p:[],g:[]}); w[k] = w[k].filter(x => x.id!=id); ls.s('wl', w); pgFav(); }
+async function pgFav(){
+  const w = ls.g('wl',{p:[],g:[]});
+  const card = (k,x) => `<div class="card pc" onclick="act('${k==='p'?'profile':'game'}','${esc(x.id)}')" id="${k}${esc(x.id)}"><div class="sk"></div><b>${esc(x.n)}</b><div class="ps">загрузка</div><button class="sm" onclick="event.stopPropagation();unfav('${k}','${esc(x.id)}')">Открепить</button></div>`;
+  $('#app').innerHTML = `<div class="bar"><button onclick="exportFav()">Экспорт JSON</button><button onclick="importFav()">Импорт JSON</button></div>`+
+    panel('ЗАКРЕПЛЁННЫЕ ПРОФИЛИ','',`<div class="grid pin">${w.p.map(x=>card('p',x)).join('')||'<div class="msg">Нет закреплённых. Нажмите «Закрепить» в профиле</div>'}</div>`)+
+    panel('ЗАКРЕПЛЁННЫЕ ИГРЫ','',`<div class="grid pin">${w.g.map(x=>card('g',x)).join('')||'<div class="msg">Нет закреплённых. Нажмите «Закрепить» на странице игры</div>'}</div>`);
+  const fill = (id, img, html) => { const e = $('#'+id); if (!e) return; const im = e.firstElementChild; if (img) im.outerHTML = `<img src="${esc(img)}" alt="">`; e.querySelector('.ps').innerHTML = html; };
+  const hs = await heads(w.p.map(x=>x.id));
+  w.p.forEach(async x => {
+    const [u,f,fo,fi] = await Promise.allSettled([api('users','/v1/users/'+x.id), api('friends',`/v1/users/${x.id}/friends/count`), api('friends',`/v1/users/${x.id}/followers/count`), api('friends',`/v1/users/${x.id}/followings/count`)]);
+    const c = r => val(r, v=>fmt(v.count));
+    fill('p'+x.id, hs[x.id], `${row('друзья',c(f))}${row('подписчики',c(fo))}${row('подписки',c(fi))}${row('создан',val(u,v=>dt(v.created)))}${val(u,v=>v.isBanned?'<span class="err">заблокирован</span>':'')}`);
+  });
+  w.g.forEach(async x => {
+    try{
+      const uni = await placeToUniverse(x.id);
+      const [g,v,ic] = await Promise.allSettled([api('games',`/v1/games?universeIds=${uni}`), api('games',`/v1/games/votes?universeIds=${uni}`), api('thumbnails',`/v1/games/icons?universeIds=${uni}&size=150x150&format=Png`)]);
+      const d = val(g,r=>r.data[0],{}), vt = val(v,r=>r.data[0],null), t = vt ? vt.upVotes+vt.downVotes : 0;
+      fill('g'+x.id, val(ic,r=>r.data[0].imageUrl,''), `${row('онлайн',fmt(d.playing))}${row('рейтинг',t?Math.round(vt.upVotes/t*100)+'%':'—')}${row('посещения',fmt(d.visits))}${row('избранное',fmt(d.favoritedCount))}`);
+    }catch{ fill('g'+x.id,'','недоступно'); }
+  });
+}
+
+
+const ocBody = g => row('активен',g.active?'да':'нет')+row('причина (игроку)',esc(g.displayReason||'—'))+row('причина (приватная)',esc(g.privateReason||'—'))+row('начало',g.startTime?new Date(g.startTime).toLocaleString('ru-RU'):'—')+row('срок',g.duration?esc(g.duration):'навсегда');
+async function ocReq(path){
+  const k = $('#ock').value.trim(); ls.s('ockey', k);
+  if (!k) throw new Error('Введите ключ доступа');
+  if (!workerOn()) throw new Error('Сервис недоступен');
+  const r = await fetch(workerUrl('https://apis.roblox.com'+path), {headers:{'x-api-key':k}});
+  const j = await r.json().catch(()=>({}));
+  if (!r.ok){ const e = new Error(j.message || j.error || 'HTTP '+r.status); e.status = r.status; throw e; }
+  return j;
+}
+async function ocCheck(all){
+  const o = $('#ocr'); o.innerHTML = '<div class="msg">запрос…</div>';
+  try{
+    const uni = await placeToUniverse($('#mg').value.trim());
+    if (!all){
+      let g = {};
+      try{ g = (await ocReq(`/cloud/v2/universes/${uni}/user-restrictions/${CUR.id}`)).gameJoinRestriction || {}; }catch(e){ if (e.status!==404) throw e; }
+      o.innerHTML = `<div class="verdict ${g.active?'bad':'good'}">${g.active?'ЗАБАНЕН В ИГРЕ':'НЕ ЗАБАНЕН'}</div>` + (g.active ? ocBody(g) : '');
+    } else {
+      const l = (await ocReq(`/cloud/v2/universes/${uni}/user-restrictions?maxPageSize=100`)).userRestrictions || [];
+      o.innerHTML = row('записей',l.length) + l.map(x => `<div style="border:1px solid var(--ln);padding:8px 12px;margin-top:8px">${row('игрок',esc(String(x.user||'').replace('users/','')))}${ocBody(x.gameJoinRestriction||{})}</div>`).join('');
+    }
+  }catch(e){ o.innerHTML = `<div class="msg err">${esc(e.message)}${e.status===403||e.status===401?' — ключ должен принадлежать владельцу игры':''}</div>`; }
+}
+
+
+const AT = {11:'Рубашка',12:'Штаны',2:'Футболка',8:'Шапка',41:'Аксессуар волос',42:'Аксессуар лица',43:'Шея',44:'Плечи',45:'Грудь',46:'Спина',47:'Пояс',19:'Gear'};
+function pgMarket(){
+  $('#app').innerHTML = panel('МАРКЕТПЛЕЙС','',
+    `<div class="bar"><input id="mk" placeholder="Название предмета"><select id="mt" style="flex:none"><option value="">любой тип</option>${Object.entries(AT).map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select>
+     <select id="mr" style="flex:none"><option value="">любая редкость</option><option value="reg">обычные</option><option value="Limited">Limited</option><option value="LimitedUnique">LimitedU</option><option value="Collectible">Collectible</option></select>
+     <select id="ms" style="flex:none"><option value="2">по продажам</option><option value="1">по фаворитам</option><option value="0">по релевантности</option><option value="3">по обновлению</option><option value="4">сначала дешёвые</option><option value="5">сначала дорогие</option></select></div>
+     <div class="bar"><select id="mc" style="flex:none"><option value="ugc">кроме Roblox (UGC)</option><option value="all">все создатели</option><option value="roblox">только Roblox</option></select><input id="mcr" placeholder="создатель: ник или ID" style="max-width:220px"><label>цена от <input type="number" id="pmin" min="0"></label><label>до <input type="number" id="pmax" min="0"></label><label>фаворитов от <input type="number" id="fmin" min="0"></label><label>покупок от <input type="number" id="bmin" min="0"></label>
+     <label>страниц <input type="number" id="mpg" value="3" min="1" max="10"></label><label><input type="checkbox" id="mn"> не в продаже</label><button onclick="runMarket()">Искать</button></div>`) + '<div id="mres"></div>';
+  $('#mk').onkeydown = e => { if (e.key==='Enter') runMarket(); };
+  runMarket();
+}
+async function runMarket(){
+  const box = $('#mres'); box.innerHTML = '<div class="msg">загрузка…</div>';
+  try{
+    const q = $('#mk').value.trim(), pages = Math.min(10, +$('#mpg').value||1), num = i => $(i).value==='' ? null : +$(i).value;
+    let items = [], cur = ''; const ug = $('#mc').value, cr = $('#mcr').value.trim(), isRb = g => g.creatorTargetId===1 || /^roblox$/i.test(g.creatorName||''); let crp = ''; if (cr){ const cu = await resolveUser(cr); crp = '&CreatorType=1&CreatorTargetId='+cu.id; }
+    for (let i=0;i<(ug==='ugc'&&!cr?Math.max(pages,10):pages);i++){
+      const r = await retry(() => api('catalog',`/v1/search/items/details?Keyword=${encodeURIComponent(q)}&SortType=${$('#ms').value}&SortAggregation=5&Limit=30&IncludeNotForSale=${$('#mn').checked}${crp}${cur?'&cursor='+encodeURIComponent(cur):''}`), 3);
+      items.push(...(r.data||[])); cur = r.nextPageCursor; if (!cur) break; if (ug==='ugc' && !cr && items.filter(x=>!isRb(x)).length>=pages*30) break;
+    }
+    const pr = g => g.lowestPrice ?? g.price ?? 0, rs = $('#mr').value, ty = $('#mt').value, a = num('#pmin'), b = num('#pmax'), f = num('#fmin'), p = num('#bmin');
+    items = items.filter(g => { const r = g.itemRestrictions||[];
+      return (ug==='all' || cr || (ug==='ugc' ? !isRb(g) : isRb(g))) && (!rs || (rs==='reg' ? !r.length : r.includes(rs))) && (!ty || String(g.assetType)===ty) && (a==null || pr(g)>=a) && (b==null || pr(g)<=b) && (f==null || (g.favoriteCount||0)>=f) && (p==null || (g.purchaseCount||0)>=p); });
+    const th = {}, ids = items.filter(g => g.itemType==='Asset').map(g=>g.id);
+    for (let i=0;i<ids.length;i+=100){ try{ (await api('thumbnails',`/v1/assets?assetIds=${ids.slice(i,i+100).join()}&size=150x150&format=Png`)).data.forEach(x => th[x.targetId] = x.imageUrl); }catch{} }
+    const kind = g => { const r = g.itemRestrictions||[]; return r.includes('LimitedUnique')?'LimitedU':r.includes('Limited')?'Limited':r.includes('Collectible')?'Collectible':'обычный'; };
+    const price = g => g.lowestPrice!=null ? 'R$ '+fmt(g.lowestPrice) : g.price!=null ? 'R$ '+fmt(g.price) : esc(g.priceStatus||'—');
+    box.innerHTML = panel('РЕЗУЛЬТАТ', `найдено: ${items.length}`, items.length ? `<div class="tw"><table><thead><tr><th></th><th>ПРЕДМЕТ</th><th>РЕДКОСТЬ</th><th>ЦЕНА</th><th>ПОКУПКИ</th><th>ФАВОРИТЫ</th><th>СОЗДАТЕЛЬ</th><th></th></tr></thead><tbody>`+
+      items.map(g => `<tr class="clk" onclick="window.open('https://www.roblox.com/${g.itemType==='Bundle'?'bundles':'catalog'}/${g.id}','_blank')"><td><img class="ico" src="${esc(th[g.id]||'')}" alt=""></td><td>${esc(g.name)}</td><td>${kind(g)}</td><td>${price(g)}</td><td>${fmt(g.purchaseCount)}</td><td>${fmt(g.favoriteCount)}</td><td>${esc(g.creatorName||'—')}</td>
+        <td>${kind(g)!=='обычный'?`<button class="sm" onclick="event.stopPropagation();rapOf(${g.id},this)">RAP</button>`:''}</td></tr>`).join('')+`</tbody></table></div>` : '<div class="msg">Ничего не найдено. Ослабьте фильтры или увеличьте число страниц.</div>');
+  }catch(e){ errBox(box, e.message); }
+}
+async function rapOf(id, el){
+  el.disabled = true;
+  try{ const r = await api('economy',`/v1/assets/${id}/resale-data`); el.parentNode.innerHTML = `<div>RAP ${fmt(r.recentAveragePrice)}<br>${fmt(r.numberRemaining)}/${fmt(r.assetStock)}</div>`; }
+  catch{ el.disabled = false; toast('Не удалось получить RAP'); }
+}
+
+(function(){
+  const c = document.getElementById('bgfx'), x = c.getContext('2d'); let W, H, P = [];
+  const rs = () => { W = c.width = innerWidth; H = c.height = innerHeight; P = Array.from({length:Math.min(70,Math.floor(W*H/22000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25})); };
+  rs(); addEventListener('resize', rs);
+  (function f(){
+    x.clearRect(0,0,W,H);
+    P.forEach((p,i) => { p.x=(p.x+p.vx+W)%W; p.y=(p.y+p.vy+H)%H; x.fillStyle='rgba(255,255,255,.35)'; x.fillRect(p.x,p.y,1.5,1.5);
+      for (let j=i+1;j<P.length;j++){ const q=P[j], d=Math.hypot(p.x-q.x,p.y-q.y); if (d<120){ x.strokeStyle=`rgba(255,255,255,${.09*(1-d/120)})`; x.beginPath(); x.moveTo(p.x,p.y); x.lineTo(q.x,q.y); x.stroke(); } } });
+    requestAnimationFrame(f);
+  })();
+})();
+route();
+</script>
+</body>
+</html>
